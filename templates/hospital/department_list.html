@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Clinical Departments - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h3 class="fw-bold mb-1"><i class="bi bi-hospital text-teal me-2"></i> Clinical Departments</h3>
+            <p class="text-muted small mb-0">Specialized medical services and healthcare units</p>
+        </div>
+        {% if user.is_admin %}
+            <a href="{% url 'department_create' %}" class="btn btn-primary-custom btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Add Department
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Departments Grid -->
+    <div class="row g-4">
+        {% for dept in departments %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card dept-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="stat-icon bg-light text-primary">
+                            <i class="bi {{ dept.icon|default:'bi-hospital' }}"></i>
+                        </div>
+                        <span class="badge bg-primary-subtle text-primary">
+                            {{ dept.doctor_count }} Doctor{{ dept.doctor_count|pluralize }}
+                        </span>
+                    </div>
+
+                    <h4 class="fw-bold mb-2">{{ dept.name }}</h4>
+                    <p class="text-muted small mb-4">{{ dept.description|default:"Providing high-quality medical assessment and treatment services." }}</p>
+
+                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                        <a href="{% url 'doctors_list' %}?department={{ dept.id }}" class="text-decoration-none small fw-semibold text-primary">
+                            Explore Doctors <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                        {% if user.is_admin %}
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'department_edit' dept.id %}" class="btn btn-sm btn-outline-warning" title="Edit Department">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'department_delete' dept.id %}" class="btn btn-sm btn-outline-danger" title="Delete Department">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                No departments added yet.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

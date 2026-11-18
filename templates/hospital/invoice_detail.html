@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoice #{{ invoice.invoice_number }} - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print flex-wrap gap-2">
+        <div>
+            <h3 class="fw-bold mb-0">Billing Receipt</h3>
+            <p class="text-muted small mb-0">Official Invoice for Medical Consultation</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'appointment_detail' invoice.appointment.id %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back to Appointment
+            </a>
+            <button onclick="window.print()" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-printer me-1"></i> Print Receipt
+            </button>
+            {% if invoice.payment_status != 'paid' %}
+                <a href="{% url 'invoice_pay' invoice.id %}" class="btn btn-success btn-sm">
+                    <i class="bi bi-credit-card me-1"></i> Pay Now
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card p-5 border shadow-sm rounded-4 bg-white" id="invoiceCard">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+                    <div>
+                        <h3 class="fw-bold text-teal mb-0"><i class="bi bi-heart-pulse-fill me-2"></i> MediCare Hub</h3>
+                        <p class="text-muted small mb-0">Billing & Patient Accounts Department</p>
+                        <p class="text-muted small mb-0">Tax ID: MED-883921-X</p>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge {% if invoice.payment_status == 'paid' %}bg-success{% else %}bg-warning text-dark{% endif %} fs-6 px-3 py-2 mb-2">
+                            {{ invoice.payment_status|upper }}
+                        </span>
+                        <h5 class="fw-bold text-dark mb-0">#{{ invoice.invoice_number }}</h5>
+                        <p class="text-muted small mb-0">Issued: {{ invoice.created_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4 p-3 bg-light rounded-3">
+                    <div class="col-sm-6">
+                        <span class="text-muted small d-block">Billed To:</span>
+                        <strong>{{ invoice.patient.get_full_name|default:invoice.patient.username }}</strong>
+                        <div class="small text-muted">{{ invoice.patient.email }}</div>
+                        <div class="small text-muted">{{ invoice.patient.phone|default:"" }}</div>
+                    </div>
+                    <div class="col-sm-6 text-sm-end">
+                        <span class="text-muted small d-block">Service Provider:</span>
+                        <strong>{{ invoice.appointment.doctor }}</strong>
+                        <div class="small text-muted">{{ invoice.appointment.department.name }}</div>
+                        <div class="small text-muted">Visit Date: {{ invoice.appointment.appointment_date }}</div>
+                    </div>
+                </div>
+
+                <div class="table-responsive mb-4">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item Description</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Physician Consultation Fee</strong>
+                                    <div class="small text-muted">Doctor: {{ invoice.appointment.doctor }} ({{ invoice.appointment.department.name }})</div>
+                                </td>
+                                <td class="text-end fw-semibold">${{ invoice.consultation_fee }}</td>
+                            </tr>
+                            {% if invoice.medicine_charges > 0 %}
+                                <tr>
+                                    <td>
+                                        <strong>Medications & Clinical Supplies</strong>
+                                    </td>
+                                    <td class="text-end fw-semibold">${{ invoice.medicine_charges }}</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="fs-5">Total Billed:</th>
+                                <th class="text-end fs-5 text-success">${{ invoice.total_amount }}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <span class="text-muted small d-block">Payment Method</span>
+                        <strong>{{ invoice.get_payment_method_display }}</strong>
+                    </div>
+                    <div>
+                        <span class="text-muted small d-block">Settlement Status</span>
+                        {% if invoice.payment_status == 'paid' %}
+                            <strong class="text-success"><i class="bi bi-check-circle-fill me-1"></i> Paid in Full</strong>
+                            <small class="text-muted d-block">on {{ invoice.paid_at|date:"M d, Y" }}</small>
+                        {% else %}
+                            <strong class="text-warning"><i class="bi bi-clock-fill me-1"></i> Payment Pending</strong>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="text-center text-muted small border-top pt-3">
+                    Thank you for choosing MediCare Hub for your medical care.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

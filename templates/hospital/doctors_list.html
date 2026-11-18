@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Find Doctors - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h3 class="fw-bold mb-1"><i class="bi bi-person-badge text-teal me-2"></i> Our Medical Specialists</h3>
+            <p class="text-muted small mb-0">Browse certified physicians and schedule your appointment</p>
+        </div>
+        {% if user.is_admin %}
+            <a href="{% url 'doctor_create' %}" class="btn btn-primary-custom btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Add Doctor Profile
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="card p-3 mb-4 shadow-sm border-0">
+        <form method="GET" class="row g-2 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control" placeholder="Search doctor by name, qualification, specialization..." value="{{ query }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select name="department" class="form-select">
+                    <option value="">-- All Departments --</option>
+                    {% for dept in departments %}
+                        <option value="{{ dept.id }}" {% if selected_dept == dept.id|stringformat:"s" %}selected{% endif %}>{{ dept.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-custom flex-grow-1">Search</button>
+                <a href="{% url 'doctors_list' %}" class="btn btn-outline-secondary" title="Reset"><i class="bi bi-arrow-counterclockwise"></i></a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Doctors Grid -->
+    <div class="row g-4">
+        {% for doc in doctors %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card doctor-card p-4 h-100 text-center">
+                    <div class="rounded-circle bg-light text-primary mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 85px; height: 85px; font-size: 2.5rem;">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ doc }}</h5>
+                    <div class="badge bg-light text-secondary mb-2">{{ doc.specialization }}</div>
+                    
+                    <div class="small text-muted mb-2">
+                        <i class="bi bi-mortarboard me-1 text-teal"></i> {{ doc.qualification }}
+                    </div>
+                    
+                    <div class="small text-muted mb-3">
+                        <i class="bi bi-geo-alt me-1 text-danger"></i> Room {{ doc.room_number }} | {{ doc.available_days }}
+                    </div>
+
+                    <div class="p-2 bg-light rounded-3 mb-3 d-flex justify-content-around small">
+                        <div>
+                            <span class="text-muted d-block">Experience</span>
+                            <strong>{{ doc.experience_years }}+ Yrs</strong>
+                        </div>
+                        <div class="border-start"></div>
+                        <div>
+                            <span class="text-muted d-block">Consultation</span>
+                            <strong class="text-success">${{ doc.consultation_fee }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto d-flex gap-2 justify-content-center">
+                        <a href="{% url 'doctor_detail' doc.id %}" class="btn btn-outline-secondary btn-sm flex-grow-1">
+                            Profile
+                        </a>
+                        <a href="{% url 'appointment_book' %}?doctor={{ doc.id }}&department={{ doc.department.id }}" class="btn btn-primary-custom btn-sm flex-grow-1">
+                            Book Visit
+                        </a>
+                        {% if user.is_admin %}
+                            <a href="{% url 'doctor_edit' doc.id %}" class="btn btn-outline-warning btn-sm" title="Edit Doctor Profile">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="bi bi-person-x fs-1 d-block mb-2"></i>
+                No doctors found matching your query.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

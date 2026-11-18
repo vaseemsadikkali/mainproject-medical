@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card form-card p-4 text-center">
+                <div class="mb-3">
+                    {% if user_obj.profile_picture %}
+                        <img src="{{ user_obj.profile_picture.url }}" alt="Profile" class="rounded-circle img-thumbnail" style="width: 120px; height: 120px; object-fit: cover;">
+                    {% else %}
+                        <div class="rounded-circle bg-light text-primary mx-auto d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; font-size: 3rem;">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <h4 class="fw-bold mb-1">{{ user_obj.get_full_name|default:user_obj.username }}</h4>
+                <p class="text-muted small mb-2">@{{ user_obj.username }}</p>
+                <div>
+                    <span class="badge {{ user_obj.get_role_badge_class }} px-3 py-2 fs-6">
+                        {{ user_obj.get_role_display }}
+                    </span>
+                </div>
+                <hr class="my-3">
+                <div class="text-start small text-muted">
+                    <div class="mb-2"><i class="bi bi-envelope me-2"></i> {{ user_obj.email|default:"No email" }}</div>
+                    <div class="mb-2"><i class="bi bi-telephone me-2"></i> {{ user_obj.phone|default:"No phone" }}</div>
+                    <div><i class="bi bi-calendar-event me-2"></i> Joined: {{ user_obj.date_joined|date:"M d, Y" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card form-card p-4">
+                <h4 class="fw-bold mb-3"><i class="bi bi-pencil-square text-teal me-2"></i> Edit Profile Information</h4>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <h6 class="fw-bold text-secondary mb-3">General Details</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">First Name</label>
+                            {{ u_form.first_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Last Name</label>
+                            {{ u_form.last_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Email</label>
+                            {{ u_form.email }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Phone</label>
+                            {{ u_form.phone }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Gender</label>
+                            {{ u_form.gender }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Date of Birth</label>
+                            {{ u_form.date_of_birth }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold">Address</label>
+                            {{ u_form.address }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold">Profile Picture (File Upload)</label>
+                            {{ u_form.profile_picture }}
+                        </div>
+                    </div>
+
+                    {% if p_form %}
+                        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-clipboard2-pulse me-1 text-teal"></i> Patient Medical Info</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Blood Group</label>
+                                {{ p_form.blood_group }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Emergency Contact Name</label>
+                                {{ p_form.emergency_contact_name }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Emergency Contact Phone</label>
+                                {{ p_form.emergency_contact_phone }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Medical History</label>
+                                {{ p_form.medical_history }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Allergies</label>
+                                {{ p_form.allergies }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary-custom px-4">
+                        <i class="bi bi-save me-1"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

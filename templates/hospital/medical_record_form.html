@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Medical Record & Prescription - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card form-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-file-earmark-medical-fill text-teal me-2"></i> Clinical Record & Prescription</h4>
+                    <a href="{% url 'appointment_detail' appointment.id %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+
+                <div class="alert alert-light border small mb-4">
+                    <div class="row">
+                        <div class="col-sm-6"><strong>Patient:</strong> {{ appointment.patient.get_full_name|default:appointment.patient.username }}</div>
+                        <div class="col-sm-6"><strong>Doctor:</strong> {{ appointment.doctor }}</div>
+                        <div class="col-sm-6"><strong>Department:</strong> {{ appointment.department.name }}</div>
+                        <div class="col-sm-6"><strong>Consultation Date:</strong> {{ appointment.appointment_date }}</div>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Patient Symptoms *</label>
+                        {{ form.symptoms }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Diagnosis *</label>
+                        {{ form.diagnosis }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Treatment Notes / Procedures</label>
+                        {{ form.treatment_notes }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-primary"><i class="bi bi-prescription me-1"></i> Prescribed Medicines & Dosage *</label>
+                        {{ form.prescribed_medicines }}
+                        <small class="text-muted">Enter drug names, dosage, frequency, and duration.</small>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Lab Report Attachment (File Upload)</label>
+                            {{ form.lab_report_file }}
+                            <small class="text-muted">Attach PDF/image of blood work, X-ray, or scan.</small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Follow-up Date</label>
+                            {{ form.follow_up_date }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                        <i class="bi bi-save me-1"></i> Save Clinical Record & Prescription
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

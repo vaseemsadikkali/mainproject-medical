@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card form-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-person-plus text-teal me-2"></i> {{ title }}</h4>
+                    <a href="{% url 'doctors_list' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    {% if available_users %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Select User Account to Link *</label>
+                            <select name="user_id" class="form-select" required>
+                                <option value="">-- Choose Staff or Admin User --</option>
+                                {% for u in available_users %}
+                                    <option value="{{ u.id }}">{{ u.username }} ({{ u.get_full_name|default:u.email }})</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">Must be an existing Staff or Admin user account.</small>
+                        </div>
+                    {% endif %}
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Department *</label>
+                            {{ form.department }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Specialization *</label>
+                            {{ form.specialization }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Qualification *</label>
+                            {{ form.qualification }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Experience (Years) *</label>
+                            {{ form.experience_years }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Consultation Fee ($) *</label>
+                            {{ form.consultation_fee }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Room Number *</label>
+                            {{ form.room_number }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Available Days *</label>
+                            {{ form.available_days }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Available Time Slot *</label>
+                            {{ form.available_time_slot }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Doctor Biography</label>
+                            {{ form.bio }}
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                {{ form.is_available }}
+                                <label class="form-check-label fw-semibold" for="{{ form.is_available.id_for_label }}">
+                                    Available for consultations
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom w-100">
+                        <i class="bi bi-check2 me-1"></i> Save Doctor Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

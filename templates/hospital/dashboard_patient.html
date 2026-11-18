@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Portal - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="fw-bold mb-0">Patient Health Portal</h3>
+                <span class="badge bg-success px-3 py-1">Basic Access</span>
+            </div>
+            <p class="text-muted small mb-0">Welcome, <strong>{{ user.get_full_name|default:user.username }}</strong></p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-person-gear me-1"></i> Medical Profile
+            </a>
+            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm">
+                <i class="bi bi-calendar-plus me-1"></i> Book New Appointment
+            </a>
+        </div>
+    </div>
+
+    <!-- Upcoming Appointments Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="p-3 bg-white border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-calendar-event text-primary me-2"></i> Upcoming Visits</h5>
+            <span class="badge bg-primary-subtle text-primary">{{ upcoming_appointments.count }} Scheduled</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table custom-table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Doctor</th>
+                        <th>Department</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for apt in upcoming_appointments %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-primary">{{ apt.appointment_date }}</div>
+                                <small class="text-muted">{{ apt.appointment_time }}</small>
+                            </td>
+                            <td>{{ apt.doctor }}</td>
+                            <td><span class="badge bg-light text-dark">{{ apt.department.name }}</span></td>
+                            <td>{{ apt.reason_for_visit|truncatewords:6 }}</td>
+                            <td><span class="badge {{ apt.get_status_badge }}">{{ apt.get_status_display }}</span></td>
+                            <td class="text-end">
+                                <a href="{% url 'appointment_detail' apt.id %}" class="btn btn-sm btn-outline-primary" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if apt.status == 'pending' %}
+                                    <a href="{% url 'appointment_edit' apt.id %}" class="btn btn-sm btn-outline-secondary" title="Reschedule">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'appointment_delete' apt.id %}" class="btn btn-sm btn-outline-danger" title="Cancel">
+                                        <i class="bi bi-x-circle"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <p class="mb-2">You have no upcoming appointments.</p>
+                                <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm">
+                                    <i class="bi bi-plus-circle me-1"></i> Book an Appointment Today
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Medical Records & Prescriptions -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="p-3 bg-white border-bottom">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-prescription text-teal me-2"></i> My Prescriptions & Records</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table custom-table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor</th>
+                                <th>Diagnosis</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rec in records %}
+                                <tr>
+                                    <td>{{ rec.created_at|date:"M d, Y" }}</td>
+                                    <td>{{ rec.doctor }}</td>
+                                    <td><span class="badge bg-light text-dark">{{ rec.diagnosis|truncatewords:4 }}</span></td>
+                                    <td class="text-end">
+                                        <a href="{% url 'medical_record_detail' rec.id %}" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-file-earmark-medical me-1"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No medical records on file.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoices & Billing -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="p-3 bg-white border-bottom">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-receipt text-primary me-2"></i> Billing Invoices</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table custom-table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for inv in invoices %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">#{{ inv.invoice_number }}</div>
+                                        <small class="text-muted">{{ inv.created_at|date:"M d, Y" }}</small>
+                                    </td>
+                                    <td class="fw-bold">${{ inv.total_amount }}</td>
+                                    <td>
+                                        {% if inv.payment_status == 'paid' %}
+                                            <span class="badge bg-success-subtle text-success">Paid</span>
+                                        {% else %}
+                                            <span class="badge bg-warning-subtle text-warning">Unpaid</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'invoice_detail' inv.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        {% if inv.payment_status != 'paid' %}
+                                            <a href="{% url 'invoice_pay' inv.id %}" class="btn btn-sm btn-success">
+                                                Pay
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No invoices available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

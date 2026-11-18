@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Appointments Directory - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h3 class="fw-bold mb-1"><i class="bi bi-calendar2-range text-teal me-2"></i> Appointments</h3>
+            <p class="text-muted small mb-0">Role-aware appointment records & scheduling history</p>
+        </div>
+        <div>
+            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Book New Appointment
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter & Search Bar (PDF Feature: Search functionality) -->
+    <div class="card p-3 mb-4 shadow-sm border-0">
+        <form method="GET" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control" placeholder="Search patient, doctor, reason..." value="{{ query }}">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">-- All Statuses --</option>
+                    <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="confirmed" {% if status_filter == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                    <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="date" name="date" class="form-control" value="{{ date_filter }}" placeholder="Date">
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-custom flex-grow-1">Filter</button>
+                <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary" title="Reset Filters"><i class="bi bi-arrow-counterclockwise"></i></a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Appointments Table (CRUD Read) -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table custom-table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Department</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for apt in appointments %}
+                        <tr>
+                            <td><strong>#{{ apt.id }}</strong></td>
+                            <td>
+                                <div class="fw-bold">{{ apt.patient.get_full_name|default:apt.patient.username }}</div>
+                                <div class="small text-muted">{{ apt.patient.phone|default:"" }}</div>
+                            </td>
+                            <td>{{ apt.doctor }}</td>
+                            <td><span class="badge bg-light text-dark">{{ apt.department.name }}</span></td>
+                            <td>
+                                <div class="fw-semibold">{{ apt.appointment_date }}</div>
+                                <small class="text-muted">{{ apt.appointment_time }}</small>
+                            </td>
+                            <td>
+                                <span class="badge {{ apt.get_status_badge }}">{{ apt.get_status_display }}</span>
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'appointment_detail' apt.id %}" class="btn btn-sm btn-outline-primary" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                {% if user.is_admin or user.is_staff_member %}
+                                    <a href="{% url 'appointment_status_update' apt.id %}" class="btn btn-sm btn-outline-warning" title="Update Status">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if user.is_admin or user == apt.patient and apt.status == 'pending' %}
+                                    <a href="{% url 'appointment_edit' apt.id %}" class="btn btn-sm btn-outline-secondary" title="Edit / Reschedule">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'appointment_delete' apt.id %}" class="btn btn-sm btn-outline-danger" title="Cancel / Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-calendar-x fs-1 d-block mb-2 text-secondary"></i>
+                                No appointments found matching your search.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

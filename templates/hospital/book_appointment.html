@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Book an Appointment - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card form-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-calendar2-plus-fill text-teal me-2"></i> Book Medical Appointment</h4>
+                    <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+                <p class="text-muted small">Select your preferred medical department, doctor, and consultation slot.</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Medical Department *</label>
+                        {{ form.department }}
+                        {% if form.department.errors %}
+                            <div class="text-danger small mt-1">{{ form.department.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Attending Doctor *</label>
+                        {{ form.doctor }}
+                        {% if form.doctor.errors %}
+                            <div class="text-danger small mt-1">{{ form.doctor.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Appointment Date *</label>
+                            {{ form.appointment_date }}
+                            {% if form.appointment_date.errors %}
+                                <div class="text-danger small mt-1">{{ form.appointment_date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Preferred Time *</label>
+                            {{ form.appointment_time }}
+                            {% if form.appointment_time.errors %}
+                                <div class="text-danger small mt-1">{{ form.appointment_time.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Reason for Visit / Symptoms *</label>
+                        {{ form.reason_for_visit }}
+                        {% if form.reason_for_visit.errors %}
+                            <div class="text-danger small mt-1">{{ form.reason_for_visit.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                        <i class="bi bi-check-circle me-1"></i> Confirm Appointment Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

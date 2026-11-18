@@ -1,0 +1,12 @@
+*.pyc
+*__pycache__*
+db.sqlite3
+/media/medical_reports/*
+!/media/medical_reports/.gitkeep
+/media/profiles/*
+!/media/profiles/.gitkeep
+staticfiles/
+.env
+venv/
+env/
+.DS_Store

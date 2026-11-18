@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}Administrator Dashboard - MediCare Hub{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="fw-bold mb-0">Admin Control Center</h3>
+                <span class="badge bg-danger px-3 py-1">Full Control</span>
+            </div>
+            <p class="text-muted small mb-0">System Overview, Analytics, Role Controls & Clinical Activity</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'reports' %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-file-earmark-bar-graph me-1"></i> Reports
+            </a>
+            <a href="{% url 'user_list' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-people me-1"></i> Users
+            </a>
+            <a href="{% url 'department_create' %}" class="btn btn-primary-custom btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Add Dept
+            </a>
+            <a href="{% url 'doctor_create' %}" class="btn btn-success btn-sm">
+                <i class="bi bi-person-plus me-1"></i> Add Doctor
+            </a>
+        </div>
+    </div>
+
+    <!-- Metric Stat Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Total Revenue</span>
+                        <h3 class="fw-bold text-success mb-0">${{ total_revenue }}</h3>
+                        <span class="badge bg-success-subtle text-success small mt-1">Paid Invoices</span>
+                    </div>
+                    <div class="stat-icon bg-success bg-opacity-10 text-success">
+                        <i class="bi bi-cash-stack"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Total Appointments</span>
+                        <h3 class="fw-bold text-primary mb-0">{{ total_appointments }}</h3>
+                        <span class="text-muted small">Today: {{ today_appointments }}</span>
+                    </div>
+                    <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Doctors & Staff</span>
+                        <h3 class="fw-bold text-info mb-0">{{ total_doctors }}</h3>
+                        <span class="text-muted small">Active Specialists</span>
+                    </div>
+                    <div class="stat-icon bg-info bg-opacity-10 text-info">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted small fw-semibold text-uppercase">Registered Patients</span>
+                        <h3 class="fw-bold text-warning mb-0">{{ total_patients }}</h3>
+                        <span class="text-muted small">Total Users: {{ total_users }}</span>
+                    </div>
+                    <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                        <i class="bi bi-people"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Graphical Visualizations (PDF requirement 5: Custom dashboard charts) -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card p-4 border-0 shadow-sm rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-pie-chart-fill text-teal me-2"></i> Appointments by Status</h5>
+                    <span class="badge bg-light text-muted">Distribution</span>
+                </div>
+                <div style="position: relative; height: 260px;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card p-4 border-0 shadow-sm rounded-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-line-fill text-primary me-2"></i> Bookings by Department</h5>
+                    <span class="badge bg-light text-muted">Volume</span>
+                </div>
+                <div style="position: relative; height: 260px;">
+                    <canvas id="deptChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Appointments Table -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="p-4 d-flex justify-content-between align-items-center bg-white border-bottom">
+            <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-secondary me-2"></i> Recent Hospital Appointments</h5>
+            <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary btn-sm">View All Appointments</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table custom-table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Department</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for apt in recent_appointments %}
+                        <tr>
+                            <td><strong>#{{ apt.id }}</strong></td>
+                            <td>
+                                <div class="fw-semibold">{{ apt.patient.get_full_name|default:apt.patient.username }}</div>
+                                <div class="small text-muted">{{ apt.patient.phone|default:"" }}</div>
+                            </td>
+                            <td>{{ apt.doctor }}</td>
+                            <td><span class="badge bg-light text-dark">{{ apt.department.name }}</span></td>
+                            <td>
+                                <div>{{ apt.appointment_date }}</div>
+                                <small class="text-muted">{{ apt.appointment_time }}</small>
+                            </td>
+                            <td>
+                                <span class="badge {{ apt.get_status_badge }}">{{ apt.get_status_display }}</span>
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'appointment_detail' apt.id %}" class="btn btn-sm btn-outline-primary" title="Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'appointment_status_update' apt.id %}" class="btn btn-sm btn-outline-warning" title="Update Status">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{% url 'appointment_delete' apt.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                No appointments recorded yet.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Status Doughnut Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        const statusLabels = {{ status_labels_json|safe }};
+        const statusCounts = {{ status_counts_json|safe }};
+
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: statusLabels,
+                datasets: [{
+                    data: statusCounts,
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ef4444'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Department Bar Chart
+        const deptCtx = document.getElementById('deptChart').getContext('2d');
+        const deptLabels = {{ dept_labels_json|safe }};
+        const deptCounts = {{ dept_counts_json|safe }};
+
+        new Chart(deptCtx, {
+            type: 'bar',
+            data: {
+                labels: deptLabels,
+                datasets: [{
+                    label: 'Appointments',
+                    data: deptCounts,
+                    backgroundColor: '#0d9488',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
