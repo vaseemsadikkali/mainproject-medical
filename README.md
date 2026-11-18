@@ -121,13 +121,14 @@ final project/
 
 The project comes pre-seeded with accounts for all three roles:
 
-| Role | Username | Password | Access Capabilities |
-| :--- | :--- | :--- | :--- |
-| **Admin** | `admin` | `Admin@1234` | Full access, user management, charts, reports, Django admin |
-| **Staff / Doctor** | `dr_smith` | `Doctor@1234` | Doctor workspace, today's schedule, issue prescriptions, file uploads |
-| **Staff / Doctor** | `dr_sarah` | `Doctor@1234` | Pediatrician workspace, review appointments |
-| **Patient / User** | `john_doe` | `Patient@1234` | Book visits, view history, print prescriptions, pay invoices |
-| **Patient / User** | `lisa_wong` | `Patient@1234` | Patient portal, schedule consultations |
+| Role | Username | Password | Doctor / User Name | Access Capabilities |
+| :--- | :--- | :--- | :--- | :--- |
+| **Admin** | `admin` | `Admin@1234` | Dr. K. S. Radhakrishnan | Full access, user management, charts, reports, Django admin |
+| **Staff / Doctor** | `dr_rajesh` | `Doctor@1234` | Dr. Rajesh Kumar | Cardiologist workspace, today's schedule, issue prescriptions, lab uploads |
+| **Staff / Doctor** | `dr_lakshmi` | `Doctor@1234` | Dr. Lakshmi Nair | Pediatrician workspace, review appointments |
+| **Staff / Doctor** | `dr_arun` | `Doctor@1234` | Dr. Arun Thomas | Orthopedic surgeon workspace |
+| **Patient / User** | `rahul_k` | `Patient@1234` | Rahul Krishnan | Book visits, view history, print prescriptions, pay INR invoices |
+| **Patient / User** | `ananya_m` | `Patient@1234` | Ananya Menon | Patient portal, schedule consultations |
 
 ---
 

@@ -1,138 +1,147 @@
 {% extends 'base.html' %}
-
-{% block title %}Medical Record #{{ record.id }} - MediCare Hub{% endblock %}
+{% block title %}Medical Record #{{ record.id }} – MediCare Kerala{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 no-print flex-wrap gap-2">
-        <div>
-            <h3 class="fw-bold mb-0">Clinical Prescription & Record</h3>
-            <p class="text-muted small mb-0">Official Electronic Health Record</p>
-        </div>
-        <div class="d-flex gap-2">
-            <a href="{% url 'appointment_detail' record.appointment.id %}" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Back to Appointment
-            </a>
-            <button onclick="window.print()" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-printer me-1"></i> Print / PDF
-            </button>
-        </div>
+
+  <!-- Action Bar -->
+  <div class="d-flex justify-content-between align-items-center mb-4 no-print flex-wrap gap-2">
+    <div>
+      <h3 class="fw-bold mb-0">Electronic Prescription & Health Record</h3>
+      <p class="text-muted small mb-0">Official Electronic Medical Record &bull; Record ID: REC-{{ record.id }}</p>
     </div>
+    <div class="d-flex gap-2">
+      <a href="{% url 'appointment_detail' record.appointment.id %}" class="btn btn-secondary-custom btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to Appointment
+      </a>
+      <button onclick="window.print()" class="btn btn-primary-custom btn-sm">
+        <i class="bi bi-printer me-1"></i> Print / Download PDF
+      </button>
+    </div>
+  </div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <!-- Prescription Sheet -->
-            <div class="card p-5 border shadow-sm rounded-4 bg-white" id="prescriptionCard">
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
-                    <div class="d-flex align-items-center gap-3">
-                        <img src="/static/images/kerala-nilavilakku.svg" alt="Kerala Lamp" style="width:45px;height:58px;">
-                        <div>
-                            <h3 class="fw-bold text-teal mb-0">Arogya Keralam</h3>
-                            <p class="font-malayalam fw-bold mb-0 text-success" style="font-size:0.85rem;">ആരോഗ്യകേരളം സൂപ്പർ സ്പെഷ്യാലിറ്റി & ആയുർവേദ കേന്ദ്രം</p>
-                            <p class="text-muted small mb-0">Kochi & Trivandrum, Kerala · Helpline: 0484-2391000 · contact@arogyakeralam.org</p>
-                        </div>
-                    </div>
-                    <div class="text-end">
-                        <h5 class="fw-bold text-dark mb-1">{{ record.doctor }}</h5>
-                        <p class="text-muted small mb-0">{{ record.doctor.qualification }}</p>
-                        <p class="text-muted small mb-0">{{ record.doctor.specialization }}</p>
-                        <p class="text-muted small mb-0">{{ record.doctor.room_number }}</p>
-                    </div>
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
 
-                <!-- Patient & Visit Info -->
-                <div class="row g-3 p-3 bg-light rounded-3 mb-4">
-                    <div class="col-sm-4">
-                        <span class="text-muted small d-block">Patient Name:</span>
-                        <strong>{{ record.patient.get_full_name|default:record.patient.username }}</strong>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="text-muted small d-block">Gender / Age:</span>
-                        <span>{{ record.patient.gender|default:"-"|title }}</span>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="text-muted small d-block">Consultation Date:</span>
-                        <strong>{{ record.created_at|date:"M d, Y" }}</strong>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="text-muted small d-block">Blood Group:</span>
-                        <span>{{ record.patient.patient_profile.blood_group|default:"Not recorded" }}</span>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="text-muted small d-block">Contact Phone:</span>
-                        <span>{{ record.patient.phone|default:"-" }}</span>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="text-muted small d-block">Record ID:</span>
-                        <span class="badge bg-secondary">REC-{{ record.id }}</span>
-                    </div>
-                </div>
-
-                <!-- Clinical Observations -->
-                <div class="mb-4">
-                    <h6 class="fw-bold text-uppercase text-secondary small">Reported Symptoms</h6>
-                    <p class="text-dark">{{ record.symptoms }}</p>
-                </div>
-
-                <div class="mb-4">
-                    <h6 class="fw-bold text-uppercase text-secondary small">Clinical Diagnosis</h6>
-                    <div class="p-3 bg-light rounded border-start border-4 border-primary">
-                        <h5 class="fw-bold mb-0 text-dark">{{ record.diagnosis }}</h5>
-                    </div>
-                </div>
-
-                <!-- Rx Prescription -->
-                <div class="mb-4">
-                    <div class="d-flex align-items-center mb-2">
-                        <span class="fs-3 fw-bold text-teal me-2" style="font-family: serif;">℞</span>
-                        <h6 class="fw-bold text-uppercase text-secondary small mb-0">Prescription & Medication Schedule</h6>
-                    </div>
-                    <div class="p-3 bg-white border rounded">
-                        <pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.95rem; margin-bottom: 0;">{{ record.prescribed_medicines }}</pre>
-                    </div>
-                </div>
-
-                {% if record.treatment_notes %}
-                    <div class="mb-4">
-                        <h6 class="fw-bold text-uppercase text-secondary small">Additional Advice / Treatment Notes</h6>
-                        <p class="text-muted">{{ record.treatment_notes }}</p>
-                    </div>
-                {% endif %}
-
-                {% if record.follow_up_date %}
-                    <div class="mb-4">
-                        <div class="alert alert-info py-2 small mb-0 d-inline-block">
-                            <i class="bi bi-calendar-event me-1"></i> Recommended Follow-up: <strong>{{ record.follow_up_date }}</strong>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if record.lab_report_file %}
-                    <div class="mb-4 no-print">
-                        <h6 class="fw-bold text-uppercase text-secondary small">Attached Lab / Radiology Report</h6>
-                        <a href="{{ record.lab_report_file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-file-earmark-arrow-down me-1"></i> View / Download Report File
-                        </a>
-                    </div>
-                {% endif %}
-
-                <!-- Footer Signature -->
-                <div class="row pt-5 mt-4 border-top">
-                    <div class="col-6">
-                        <small class="text-muted">Generated by MediCare Hub Health Information System</small>
-                    </div>
-                    <div class="col-6 text-end">
-                        <div class="d-inline-block text-center">
-                            <div class="border-bottom pb-2 mb-1 px-4 text-teal fw-bold" style="min-width: 180px;">
-                                Dr. {{ record.doctor.user.get_full_name|default:record.doctor.user.username }}
-                            </div>
-                            <small class="text-muted d-block">Authorized Physician Signature</small>
-                        </div>
-                    </div>
-                </div>
+      <!-- Official Prescription Sheet -->
+      <div class="prescription-sheet" id="prescriptionCard">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="brand-symbol" style="width:48px;height:48px;font-size:1.5rem;">
+              <i class="bi bi-heart-pulse-fill"></i>
             </div>
+            <div>
+              <h3 class="fw-bold mb-0 text-dark">MediCare Kerala</h3>
+              <p class="text-primary fw-bold small mb-0">Super Specialty Hospital & Research Network</p>
+              <p class="text-muted small mb-0">Marine Drive, Kochi, Kerala · Helpline: 0484-2391000 · contact@medicare.kerala.gov.in</p>
+            </div>
+          </div>
+          <div class="text-end">
+            <h5 class="fw-bold text-dark mb-1">{{ record.doctor }}</h5>
+            <p class="text-muted small mb-0">{{ record.doctor.qualification }}</p>
+            <p class="text-primary small fw-semibold mb-0">{{ record.doctor.specialization }}</p>
+            <p class="text-muted small mb-0">{{ record.doctor.room_number }}</p>
+          </div>
         </div>
+
+        <!-- Patient & Visit Meta -->
+        <div class="row g-3 p-3 bg-light rounded-3 mb-4 border">
+          <div class="col-sm-4">
+            <span class="text-muted small d-block">Patient Name:</span>
+            <strong class="text-dark">{{ record.patient.get_full_name|default:record.patient.username }}</strong>
+          </div>
+          <div class="col-sm-4">
+            <span class="text-muted small d-block">Gender / Age:</span>
+            <span class="text-dark">{{ record.patient.gender|default:"-"|title }}</span>
+          </div>
+          <div class="col-sm-4">
+            <span class="text-muted small d-block">Consultation Date:</span>
+            <strong class="text-dark">{{ record.created_at|date:"M d, Y" }}</strong>
+          </div>
+          <div class="col-sm-4">
+            <span class="text-muted small d-block">Blood Group:</span>
+            <span>{{ record.patient.patient_profile.blood_group|default:"Not recorded" }}</span>
+          </div>
+          <div class="col-sm-4">
+            <span class="text-muted small d-block">Contact Phone:</span>
+            <span>{{ record.patient.phone|default:"-" }}</span>
+          </div>
+          <div class="col-sm-4">
+            <span class="text-muted small d-block">Consultation Slot:</span>
+            <span>{{ record.appointment.appointment_time }}</span>
+          </div>
+        </div>
+
+        <!-- Symptoms -->
+        <div class="mb-4">
+          <h6 class="fw-bold text-uppercase text-muted small mb-2" style="letter-spacing:0.05em;">Reported Symptoms & Chief Complaints</h6>
+          <p class="text-dark mb-0">{{ record.symptoms }}</p>
+        </div>
+
+        <!-- Diagnosis Box -->
+        <div class="mb-4">
+          <h6 class="fw-bold text-uppercase text-muted small mb-2" style="letter-spacing:0.05em;">Clinical Diagnosis</h6>
+          <div class="p-3 bg-light rounded border-start border-4 border-primary">
+            <h5 class="fw-bold mb-0 text-dark">{{ record.diagnosis }}</h5>
+          </div>
+        </div>
+
+        <!-- Rx Prescription -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <span class="rx-mark me-2">℞</span>
+            <h6 class="fw-bold text-uppercase text-muted small mb-0" style="letter-spacing:0.05em;">Medications & Clinical Dosage</h6>
+          </div>
+          <div class="p-3 bg-white border rounded">
+            <pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; line-height: 1.7;">{{ record.prescribed_medicines }}</pre>
+          </div>
+        </div>
+
+        {% if record.treatment_notes %}
+          <div class="mb-4">
+            <h6 class="fw-bold text-uppercase text-muted small mb-2" style="letter-spacing:0.05em;">Physician Advice & Lifestyle Recommendations</h6>
+            <p class="text-muted mb-0">{{ record.treatment_notes }}</p>
+          </div>
+        {% endif %}
+
+        {% if record.follow_up_date %}
+          <div class="mb-4">
+            <div class="alert alert-info py-2 small mb-0 d-inline-flex align-items-center gap-2 border-0 shadow-xs">
+              <i class="bi bi-calendar-event"></i>
+              <span>Next Recommended Follow-up: <strong>{{ record.follow_up_date }}</strong></span>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if record.lab_report_file %}
+          <div class="mb-4 no-print">
+            <h6 class="fw-bold text-uppercase text-muted small mb-2">Attached Diagnostic Report</h6>
+            <a href="{{ record.lab_report_file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-file-earmark-arrow-down me-1"></i> Download / View Attached File
+            </a>
+          </div>
+        {% endif %}
+
+        <!-- Signature Block -->
+        <div class="row pt-5 mt-4 border-top">
+          <div class="col-6">
+            <small class="text-muted">Generated electronically via MediCare Kerala Health Information System.</small>
+          </div>
+          <div class="col-6 text-end">
+            <div class="d-inline-block text-center">
+              <div class="border-bottom pb-2 mb-1 px-4 text-primary fw-bold" style="min-width: 190px;">
+                {{ record.doctor }}
+              </div>
+              <small class="text-muted d-block">Authorized Signatory</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
+  </div>
 </div>
 {% endblock %}

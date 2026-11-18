@@ -1,125 +1,87 @@
 {% extends 'base.html' %}
-{% block title %}Sign In – MediCare Hub{% endblock %}
+{% block title %}Sign In – MediCare Kerala{% endblock %}
 
 {% block content %}
-<div class="min-vh-100 d-flex" style="background:linear-gradient(135deg,#f1f5f9 0%,#e0f2fe 100%);">
-
-  <!-- Left Panel (Branding) -->
-  <div class="d-none d-lg-flex col-lg-6 flex-column justify-content-center align-items-center p-5"
-       style="background:linear-gradient(135deg,#0d9488 0%,#0ea5e9 60%,#8b5cf6 100%);position:relative;overflow:hidden;">
-    <!-- Decorative circles -->
-    <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06);top:-80px;right:-80px;"></div>
-    <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06);bottom:40px;left:-60px;"></div>
-
-    <div class="text-center text-white position-relative">
-      <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-4"
-           style="width:80px;height:80px;background:rgba(255,255,255,.18);backdrop-filter:blur(12px);">
-        <i class="bi bi-heart-pulse-fill" style="font-size:2.2rem;"></i>
-      </div>
-      <h2 class="fw-800 mb-3" style="font-size:2rem;">MediCare Hub</h2>
-      <p class="mb-5 opacity-90" style="font-size:1.05rem;line-height:1.75;">
-        Your all-in-one healthcare management platform for doctors, patients, and administrators.
-      </p>
-
-      <div class="d-flex flex-column gap-3 text-start">
-        {% for icon, label, desc in feature_list|default:"" %}{% endfor %}
-        <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:rgba(255,255,255,.12);">
-          <i class="bi bi-shield-lock-fill fs-5"></i>
-          <div><div class="fw-600 small">Role-Based Access</div><div class="opacity-75" style="font-size:.8rem;">Admin, Doctor & Patient portals</div></div>
-        </div>
-        <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:rgba(255,255,255,.12);">
-          <i class="bi bi-calendar2-check-fill fs-5"></i>
-          <div><div class="fw-600 small">Smart Scheduling</div><div class="opacity-75" style="font-size:.8rem;">Book & manage medical appointments</div></div>
-        </div>
-        <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:rgba(255,255,255,.12);">
-          <i class="bi bi-file-earmark-medical-fill fs-5"></i>
-          <div><div class="fw-600 small">Digital Prescriptions</div><div class="opacity-75" style="font-size:.8rem;">Clinical records & printable Rx</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Right Panel (Form) -->
-  <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center p-4">
-    <div class="w-100" style="max-width:420px;">
-
-      <!-- Mobile logo only -->
-      <div class="d-flex align-items-center gap-2 mb-5 d-lg-none">
-        <span class="d-flex align-items-center justify-content-center rounded-3"
-              style="width:36px;height:36px;background:linear-gradient(135deg,#0d9488,#0ea5e9);">
-          <i class="bi bi-heart-pulse-fill text-white"></i>
-        </span>
-        <span class="fw-800" style="font-size:1.3rem;font-family:Poppins,sans-serif;">
-          Medi<span class="text-teal">Care</span>Hub
-        </span>
-      </div>
-
-      <h2 class="fw-800 mb-1" style="font-size:1.9rem;letter-spacing:-.03em;">Welcome back</h2>
-      <p class="text-muted mb-4" style="font-size:.92rem;">Sign in to your role-based healthcare portal</p>
-
-      <form method="POST" novalidate>
-        {% csrf_token %}
-
-        <div class="mb-3">
-          <label class="form-label">Username</label>
-          <div class="input-group">
-            <span class="input-group-text px-3"><i class="bi bi-person text-muted"></i></span>
-            <input type="text" name="username" class="form-control py-3" placeholder="Enter your username" required autofocus style="border-left:0;">
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="form-card">
+        
+        <div class="text-center mb-4">
+          <div class="brand-symbol mx-auto mb-3" style="width:50px;height:50px;font-size:1.6rem;">
+            <i class="bi bi-shield-lock-fill"></i>
           </div>
+          <h3 class="fw-bold mb-1">Welcome Back</h3>
+          <p class="text-muted small">Sign in to your role-based healthcare portal</p>
         </div>
 
-        <div class="mb-4">
-          <label class="form-label">Password</label>
-          <div class="input-group">
-            <span class="input-group-text px-3"><i class="bi bi-key text-muted"></i></span>
-            <input type="password" name="password" id="passwordField" class="form-control py-3" placeholder="Enter your password" required style="border-left:0;border-right:0;">
-            <span class="input-group-text px-3" style="cursor:pointer;" onclick="togglePass()">
-              <i class="bi bi-eye-slash text-muted" id="passEye"></i>
-            </span>
-          </div>
-        </div>
+        <form method="POST" novalidate>
+          {% csrf_token %}
 
-        <button type="submit" class="btn btn-primary-custom w-100 py-3 mb-4 rounded-3" style="font-size:.95rem;">
-          <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Portal
-        </button>
-      </form>
-
-      <div class="text-center text-muted small mb-4">
-        Don't have an account?
-        <a href="{% url 'register' %}" class="fw-700 text-decoration-none text-teal"> Create one free</a>
-      </div>
-
-      <!-- Demo credentials -->
-      <div class="p-4 rounded-3" style="background:var(--bg-main);border:1px solid var(--border);">
-        <div class="d-flex align-items-center gap-2 mb-3">
-          <i class="bi bi-info-circle-fill text-teal"></i>
-          <span class="fw-700 small">Demo Credentials for Evaluation</span>
-        </div>
-        <div class="d-flex flex-column gap-2">
-          <div class="d-flex align-items-center justify-content-between p-2 rounded-2" style="background:white;border:1px solid var(--border);">
-            <div class="d-flex align-items-center gap-2">
-              <span class="badge role-admin" style="font-size:.7rem;">ADMIN</span>
-              <code style="font-size:.8rem;color:var(--dark-2);">admin</code>
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-person text-muted"></i></span>
+              <input type="text" name="username" class="form-control" placeholder="Enter username" required autofocus>
             </div>
-            <code class="text-muted" style="font-size:.8rem;">Admin@1234</code>
           </div>
-          <div class="d-flex align-items-center justify-content-between p-2 rounded-2" style="background:white;border:1px solid var(--border);">
-            <div class="d-flex align-items-center gap-2">
-              <span class="badge role-staff" style="font-size:.7rem;">DOCTOR</span>
-              <code style="font-size:.8rem;color:var(--dark-2);">dr_smith</code>
+
+          <div class="mb-4">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-key text-muted"></i></span>
+              <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Enter password" required>
+              <button class="btn btn-outline-secondary" type="button" onclick="togglePass()">
+                <i class="bi bi-eye-slash" id="passEye"></i>
+              </button>
             </div>
-            <code class="text-muted" style="font-size:.8rem;">Doctor@1234</code>
           </div>
-          <div class="d-flex align-items-center justify-content-between p-2 rounded-2" style="background:white;border:1px solid var(--border);">
-            <div class="d-flex align-items-center gap-2">
-              <span class="badge role-patient" style="font-size:.7rem;">PATIENT</span>
-              <code style="font-size:.8rem;color:var(--dark-2);">john_doe</code>
+
+          <button type="submit" class="btn btn-primary-custom w-100 py-2 mb-3">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Portal
+          </button>
+        </form>
+
+        <div class="text-center text-muted small mb-4">
+          Don't have an account? 
+          <a href="{% url 'register' %}" class="fw-bold text-primary">Register Free</a>
+        </div>
+
+        <!-- Pre-Seeded Evaluation Credentials -->
+        <div class="p-3 bg-light rounded-3 border">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-key-fill text-warning"></i>
+            <span class="fw-bold small text-dark">Evaluation Credentials (Pre-Seeded)</span>
+          </div>
+
+          <div class="d-flex flex-column gap-2 small">
+            <div class="d-flex justify-content-between align-items-center p-2 bg-white rounded border">
+              <div>
+                <span class="badge badge-status badge-role-admin">ADMIN</span>
+                <code class="ms-1 fw-bold text-dark">admin</code>
+              </div>
+              <code class="text-muted">Admin@1234</code>
             </div>
-            <code class="text-muted" style="font-size:.8rem;">Patient@1234</code>
+
+            <div class="d-flex justify-content-between align-items-center p-2 bg-white rounded border">
+              <div>
+                <span class="badge badge-status badge-role-staff">DOCTOR</span>
+                <code class="ms-1 fw-bold text-dark">dr_rajesh</code>
+              </div>
+              <code class="text-muted">Doctor@1234</code>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center p-2 bg-white rounded border">
+              <div>
+                <span class="badge badge-status badge-role-patient">PATIENT</span>
+                <code class="ms-1 fw-bold text-dark">rahul_k</code>
+              </div>
+              <code class="text-muted">Patient@1234</code>
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </div>
@@ -128,14 +90,14 @@
 {% block extra_js %}
 <script>
   function togglePass() {
-    const f = document.getElementById('passwordField');
-    const e = document.getElementById('passEye');
-    if (f.type === 'password') {
-      f.type = 'text';
-      e.className = 'bi bi-eye text-teal';
+    const field = document.getElementById('loginPassword');
+    const eye = document.getElementById('passEye');
+    if (field.type === 'password') {
+      field.type = 'text';
+      eye.className = 'bi bi-eye text-primary';
     } else {
-      f.type = 'password';
-      e.className = 'bi bi-eye-slash text-muted';
+      field.type = 'password';
+      eye.className = 'bi bi-eye-slash text-muted';
     }
   }
 </script>

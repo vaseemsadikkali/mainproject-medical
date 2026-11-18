@@ -1,152 +1,167 @@
 {% extends 'base.html' %}
-{% block title %}Patient Portal – MediCare Hub{% endblock %}
+{% block title %}Patient Portal – MediCare Kerala{% endblock %}
 
 {% block content %}
 <div class="container py-4">
 
-  <!-- Page Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <div>
-      <div class="d-flex align-items-center gap-2 mb-1">
-        <div class="d-flex align-items-center justify-content-center rounded-3"
-             style="width:38px;height:38px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
-          <i class="bi bi-person-heart" style="color:#065f46;font-size:1.1rem;"></i>
-        </div>
-        <h3 class="fw-800 mb-0">Patient Health Portal</h3>
-        <span class="badge role-patient px-3 py-1" style="font-size:.78rem;">MY HEALTH</span>
+      <div class="d-flex align-items-center gap-2">
+        <h3 class="fw-bold mb-0">Patient Health Portal</h3>
+        <span class="badge badge-status badge-role-patient">Citizen Account</span>
       </div>
-      <p class="text-muted small mb-0">Hello, <strong>{{ user.get_full_name|default:user.username }}</strong> — manage your health journey here</p>
+      <p class="text-muted small mb-0">Welcome, <strong>{{ user.get_full_name|default:user.username }}</strong> &bull; Manage your medical visits and health records</p>
     </div>
     <div class="d-flex gap-2">
-      <a href="{% url 'profile' %}" class="btn btn-sm px-4 py-2 rounded-3 border fw-600"
-         style="border-color:var(--border)!important;font-size:.85rem;color:var(--dark-3);">
-        <i class="bi bi-person-gear me-1"></i> Profile
+      <a href="{% url 'profile' %}" class="btn btn-secondary-custom btn-sm">
+        <i class="bi bi-person-gear me-1"></i> Medical Profile
       </a>
-      <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm px-4 py-2">
-        <i class="bi bi-calendar-plus me-1"></i> Book Appointment
+      <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm">
+        <i class="bi bi-calendar-plus me-1"></i> Book New Consultation
       </a>
     </div>
   </div>
 
-  <!-- Quick stat cards -->
+  <!-- Metric Stat Cards -->
   <div class="row g-3 mb-4">
     <div class="col-md-4">
-      <div class="stat-card" style="border-top:3px solid var(--primary);">
+      <div class="stat-card">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <div class="text-muted small fw-600 text-uppercase mb-1">Total Visits</div>
-            <div class="stat-num fw-800 text-teal">{{ total_appointments }}</div>
+            <div class="stat-lbl">Total Consultations</div>
+            <div class="stat-val text-primary">{{ total_appointments }}</div>
           </div>
-          <div class="stat-icon" style="background:var(--primary-light);color:var(--primary);"><i class="bi bi-calendar2-check"></i></div>
+          <div class="stat-icon-wrap" style="background: var(--primary-light); color: var(--primary);">
+            <i class="bi bi-calendar2-check"></i>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="col-md-4">
-      <div class="stat-card" style="border-top:3px solid var(--success);">
+      <div class="stat-card">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <div class="text-muted small fw-600 text-uppercase mb-1">Upcoming</div>
-            <div class="stat-num fw-800" style="color:var(--success);">{{ upcoming_appointments.count }}</div>
+            <div class="stat-lbl">Upcoming Visits</div>
+            <div class="stat-val text-success">{{ upcoming_appointments.count }}</div>
           </div>
-          <div class="stat-icon" style="background:#d1fae5;color:var(--success);"><i class="bi bi-clock"></i></div>
+          <div class="stat-icon-wrap" style="background: var(--success-bg); color: var(--success);">
+            <i class="bi bi-clock"></i>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="col-md-4">
-      <div class="stat-card" style="border-top:3px solid var(--secondary);">
+      <div class="stat-card">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <div class="text-muted small fw-600 text-uppercase mb-1">Prescriptions</div>
-            <div class="stat-num fw-800" style="color:var(--secondary);">{{ records.count }}</div>
+            <div class="stat-lbl">Digital Prescriptions</div>
+            <div class="stat-val text-info">{{ records.count }}</div>
           </div>
-          <div class="stat-icon" style="background:#e0f2fe;color:var(--secondary);"><i class="bi bi-file-earmark-medical"></i></div>
+          <div class="stat-icon-wrap" style="background: var(--info-bg); color: var(--info);">
+            <i class="bi bi-file-earmark-medical"></i>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- UPCOMING APPOINTMENTS -->
-  <div class="card mb-4" style="border-radius:var(--radius-lg);overflow:hidden;">
-    <div class="p-4 d-flex justify-content-between align-items-center border-bottom">
-      <h6 class="fw-700 mb-0"><i class="bi bi-calendar-event text-teal me-2"></i> Upcoming Appointments</h6>
-      <span class="badge px-3 py-2 rounded-pill" style="background:var(--primary-light);color:var(--primary);font-size:.78rem;">
-        {{ upcoming_appointments.count }} Scheduled
-      </span>
+  <!-- Upcoming Appointments Card -->
+  <div class="table-card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-calendar-event text-primary me-2"></i> Upcoming Medical Consultations</h6>
+      <span class="badge badge-status status-confirmed">{{ upcoming_appointments.count }} Scheduled</span>
     </div>
+
     <div class="table-responsive">
       <table class="table custom-table table-hover align-middle mb-0">
-        <thead><tr><th>Date & Time</th><th>Doctor</th><th>Department</th><th>Reason</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Doctor</th>
+            <th>Department</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
         <tbody>
           {% for apt in upcoming_appointments %}
-          <tr>
-            <td>
-              <div class="fw-700 text-teal" style="font-size:.88rem;">{{ apt.appointment_date }}</div>
-              <div class="text-muted" style="font-size:.76rem;">{{ apt.appointment_time }}</div>
-            </td>
-            <td style="font-size:.88rem;font-weight:600;">{{ apt.doctor }}</td>
-            <td><span class="badge px-2 py-1 rounded-2" style="background:var(--bg-main);color:var(--dark-3);font-size:.78rem;">{{ apt.department.name }}</span></td>
-            <td class="text-muted" style="font-size:.85rem;">{{ apt.reason_for_visit|truncatewords:5 }}</td>
-            <td><span class="badge status-{{ apt.status }} px-2 py-1 rounded-2" style="font-size:.78rem;">{{ apt.get_status_display }}</span></td>
-            <td class="text-end">
-              <div class="d-flex justify-content-end gap-1">
-                <a href="{% url 'appointment_detail' apt.id %}" class="btn btn-sm py-1 px-2 rounded-2"
-                   style="background:#eff6ff;color:#1d4ed8;font-size:.8rem;">
+            <tr>
+              <td>
+                <div class="fw-bold text-dark">{{ apt.appointment_date }}</div>
+                <small class="text-muted">{{ apt.appointment_time }}</small>
+              </td>
+              <td class="fw-semibold text-dark">{{ apt.doctor }}</td>
+              <td><span class="badge bg-light text-dark border">{{ apt.department.name }}</span></td>
+              <td>{{ apt.reason_for_visit|truncatewords:6 }}</td>
+              <td><span class="badge badge-status status-{{ apt.status }}">{{ apt.get_status_display }}</span></td>
+              <td class="text-end">
+                <a href="{% url 'appointment_detail' apt.id %}" class="btn btn-sm btn-outline-primary" title="Details">
                   <i class="bi bi-eye"></i>
                 </a>
                 {% if apt.status == 'pending' %}
-                  <a href="{% url 'appointment_edit' apt.id %}" class="btn btn-sm py-1 px-2 rounded-2"
-                     style="background:#fef3c7;color:#92400e;font-size:.8rem;" title="Reschedule">
+                  <a href="{% url 'appointment_edit' apt.id %}" class="btn btn-sm btn-outline-secondary" title="Reschedule">
                     <i class="bi bi-pencil"></i>
                   </a>
-                  <a href="{% url 'appointment_delete' apt.id %}" class="btn btn-sm py-1 px-2 rounded-2"
-                     style="background:#fee2e2;color:#991b1b;font-size:.8rem;" title="Cancel">
+                  <a href="{% url 'appointment_delete' apt.id %}" class="btn btn-sm btn-outline-danger" title="Cancel">
                     <i class="bi bi-x-circle"></i>
                   </a>
                 {% endif %}
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
           {% empty %}
-          <tr><td colspan="6" class="text-center py-5 text-muted">
-            <i class="bi bi-calendar-heart fs-1 d-block mb-2 opacity-25"></i>
-            <p class="mb-3">No upcoming appointments</p>
-            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm px-4">
-              <i class="bi bi-plus-circle me-1"></i> Book Now
-            </a>
-          </td></tr>
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">
+                <p class="mb-2">You have no upcoming consultations scheduled.</p>
+                <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-sm">
+                  <i class="bi bi-plus-circle me-1"></i> Book Consultation
+                </a>
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
 
+  <!-- Row: Records & Invoices -->
   <div class="row g-4">
-    <!-- Medical Records -->
+    <!-- Prescriptions -->
     <div class="col-lg-6">
-      <div class="card h-100" style="border-radius:var(--radius-lg);overflow:hidden;">
-        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
-          <h6 class="fw-700 mb-0"><i class="bi bi-prescription text-teal me-2"></i> My Prescriptions</h6>
+      <div class="table-card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-prescription text-primary me-2"></i> My Prescriptions & Reports</h6>
         </div>
+
         <div class="table-responsive">
           <table class="table custom-table table-hover align-middle mb-0">
-            <thead><tr><th>Date</th><th>Doctor</th><th>Diagnosis</th><th class="text-end">View</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Diagnosis</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
             <tbody>
               {% for rec in records %}
-              <tr>
-                <td class="text-muted" style="font-size:.82rem;">{{ rec.created_at|date:"M d, Y" }}</td>
-                <td style="font-size:.85rem;font-weight:600;">{{ rec.doctor }}</td>
-                <td><span class="badge px-2 py-1 rounded-2" style="background:var(--bg-main);color:var(--dark-3);font-size:.78rem;">{{ rec.diagnosis|truncatewords:3 }}</span></td>
-                <td class="text-end">
-                  <a href="{% url 'medical_record_detail' rec.id %}" class="btn btn-sm py-1 px-2 rounded-2"
-                     style="background:#d1fae5;color:#065f46;font-size:.8rem;">
-                    <i class="bi bi-file-earmark-medical me-1"></i> View
-                  </a>
-                </td>
-              </tr>
+                <tr>
+                  <td class="text-muted small">{{ rec.created_at|date:"M d, Y" }}</td>
+                  <td class="fw-semibold text-dark">{{ rec.doctor }}</td>
+                  <td><span class="badge bg-light text-dark border">{{ rec.diagnosis|truncatewords:4 }}</span></td>
+                  <td class="text-end">
+                    <a href="{% url 'medical_record_detail' rec.id %}" class="btn btn-sm btn-outline-success">
+                      <i class="bi bi-file-earmark-medical me-1"></i> View Rx
+                    </a>
+                  </td>
+                </tr>
               {% empty %}
-              <tr><td colspan="4" class="text-center py-4 text-muted" style="font-size:.88rem;">
-                <i class="bi bi-clipboard2 d-block mb-1 opacity-25 fs-3"></i> No prescriptions yet.
-              </td></tr>
+                <tr>
+                  <td colspan="4" class="text-center py-4 text-muted">No prescriptions on file yet.</td>
+                </tr>
               {% endfor %}
             </tbody>
           </table>
@@ -154,47 +169,53 @@
       </div>
     </div>
 
-    <!-- Invoices -->
+    <!-- Invoices (INR) -->
     <div class="col-lg-6">
-      <div class="card h-100" style="border-radius:var(--radius-lg);overflow:hidden;">
-        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
-          <h6 class="fw-700 mb-0"><i class="bi bi-receipt text-teal me-2"></i> Billing Invoices</h6>
+      <div class="table-card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-receipt text-primary me-2"></i> Billing Invoices (INR)</h6>
         </div>
+
         <div class="table-responsive">
           <table class="table custom-table table-hover align-middle mb-0">
-            <thead><tr><th>Invoice</th><th>Amount</th><th>Status</th><th class="text-end">Action</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>Total (INR)</th>
+                <th>Status</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
             <tbody>
               {% for inv in invoices %}
-              <tr>
-                <td>
-                  <div class="fw-600" style="font-size:.85rem;">#{{ inv.invoice_number }}</div>
-                  <div class="text-muted" style="font-size:.76rem;">{{ inv.created_at|date:"M d, Y" }}</div>
-                </td>
-                <td class="fw-700" style="color:var(--success);">₹{{ inv.total_amount }}</td>
-                <td>
-                  {% if inv.payment_status == 'paid' %}
-                    <span class="badge px-2 py-1 rounded-2" style="background:#d1fae5;color:#065f46;font-size:.76rem;"><i class="bi bi-check-circle me-1"></i> Paid</span>
-                  {% else %}
-                    <span class="badge px-2 py-1 rounded-2" style="background:#fef3c7;color:#92400e;font-size:.76rem;"><i class="bi bi-clock me-1"></i> Unpaid</span>
-                  {% endif %}
-                </td>
-                <td class="text-end">
-                  <a href="{% url 'invoice_detail' inv.id %}" class="btn btn-sm py-1 px-2 rounded-2"
-                     style="background:#eff6ff;color:#1d4ed8;font-size:.8rem;">
-                    <i class="bi bi-eye"></i>
-                  </a>
-                  {% if inv.payment_status != 'paid' %}
-                    <a href="{% url 'invoice_pay' inv.id %}" class="btn btn-sm py-1 px-2 rounded-2 ms-1"
-                       style="background:#d1fae5;color:#065f46;font-size:.8rem;">
-                      Pay
+                <tr>
+                  <td>
+                    <div class="fw-semibold text-dark">#{{ inv.invoice_number }}</div>
+                    <small class="text-muted">{{ inv.created_at|date:"M d, Y" }}</small>
+                  </td>
+                  <td class="fw-bold text-success">₹{{ inv.total_amount }}</td>
+                  <td>
+                    {% if inv.payment_status == 'paid' %}
+                      <span class="badge badge-status status-completed">Paid</span>
+                    {% else %}
+                      <span class="badge badge-status status-pending">Unpaid</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-end">
+                    <a href="{% url 'invoice_detail' inv.id %}" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-eye"></i> View
                     </a>
-                  {% endif %}
-                </td>
-              </tr>
+                    {% if inv.payment_status != 'paid' %}
+                      <a href="{% url 'invoice_pay' inv.id %}" class="btn btn-sm btn-success ms-1">
+                        Pay ₹
+                      </a>
+                    {% endif %}
+                  </td>
+                </tr>
               {% empty %}
-              <tr><td colspan="4" class="text-center py-4 text-muted" style="font-size:.88rem;">
-                <i class="bi bi-receipt d-block mb-1 opacity-25 fs-3"></i> No invoices yet.
-              </td></tr>
+                <tr>
+                  <td colspan="4" class="text-center py-4 text-muted">No billing invoices found.</td>
+                </tr>
               {% endfor %}
             </tbody>
           </table>
