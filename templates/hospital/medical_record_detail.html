@@ -25,16 +25,19 @@
             <div class="card p-5 border shadow-sm rounded-4 bg-white" id="prescriptionCard">
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
-                    <div>
-                        <h3 class="fw-bold text-teal mb-0"><i class="bi bi-heart-pulse-fill me-2"></i> MediCare Hub</h3>
-                        <p class="text-muted small mb-0">General & Multi-Specialty Hospital</p>
-                        <p class="text-muted small mb-0">Emergency 24/7: +1 (800) 555-0199 | info@medicarehub.org</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="/static/images/kerala-nilavilakku.svg" alt="Kerala Lamp" style="width:45px;height:58px;">
+                        <div>
+                            <h3 class="fw-bold text-teal mb-0">Arogya Keralam</h3>
+                            <p class="font-malayalam fw-bold mb-0 text-success" style="font-size:0.85rem;">ആരോഗ്യകേരളം സൂപ്പർ സ്പെഷ്യാലിറ്റി & ആയുർവേദ കേന്ദ്രം</p>
+                            <p class="text-muted small mb-0">Kochi & Trivandrum, Kerala · Helpline: 0484-2391000 · contact@arogyakeralam.org</p>
+                        </div>
                     </div>
                     <div class="text-end">
                         <h5 class="fw-bold text-dark mb-1">{{ record.doctor }}</h5>
                         <p class="text-muted small mb-0">{{ record.doctor.qualification }}</p>
                         <p class="text-muted small mb-0">{{ record.doctor.specialization }}</p>
-                        <p class="text-muted small mb-0">Room: {{ record.doctor.room_number }}</p>
+                        <p class="text-muted small mb-0">{{ record.doctor.room_number }}</p>
                     </div>
                 </div>
 

@@ -28,10 +28,13 @@
         <div class="col-lg-8">
             <div class="card p-5 border shadow-sm rounded-4 bg-white" id="invoiceCard">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4">
-                    <div>
-                        <h3 class="fw-bold text-teal mb-0"><i class="bi bi-heart-pulse-fill me-2"></i> MediCare Hub</h3>
-                        <p class="text-muted small mb-0">Billing & Patient Accounts Department</p>
-                        <p class="text-muted small mb-0">Tax ID: MED-883921-X</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="/static/images/kerala-nilavilakku.svg" alt="Kerala Lamp" style="width:40px;height:52px;">
+                        <div>
+                            <h3 class="fw-bold text-teal mb-0">Arogya Keralam</h3>
+                            <p class="text-muted small mb-0 font-malayalam fw-bold" style="color:#047857!important;">ആരോഗ്യകേരളം സൂപ്പർ സ്പെഷ്യാലിറ്റി ഹോസ്പിറ്റൽ</p>
+                            <p class="text-muted small mb-0">GSTIN: 32AABCA1234F1Z8 · Marine Drive, Kochi, Kerala</p>
+                        </div>
                     </div>
                     <div class="text-end">
                         <span class="badge {% if invoice.payment_status == 'paid' %}bg-success{% else %}bg-warning text-dark{% endif %} fs-6 px-3 py-2 mb-2">
@@ -44,16 +47,16 @@
 
                 <div class="row g-3 mb-4 p-3 bg-light rounded-3">
                     <div class="col-sm-6">
-                        <span class="text-muted small d-block">Billed To:</span>
+                        <span class="text-muted small d-block">Billed To (Patient):</span>
                         <strong>{{ invoice.patient.get_full_name|default:invoice.patient.username }}</strong>
                         <div class="small text-muted">{{ invoice.patient.email }}</div>
                         <div class="small text-muted">{{ invoice.patient.phone|default:"" }}</div>
                     </div>
                     <div class="col-sm-6 text-sm-end">
-                        <span class="text-muted small d-block">Service Provider:</span>
+                        <span class="text-muted small d-block">Consulting Physician:</span>
                         <strong>{{ invoice.appointment.doctor }}</strong>
                         <div class="small text-muted">{{ invoice.appointment.department.name }}</div>
-                        <div class="small text-muted">Visit Date: {{ invoice.appointment.appointment_date }}</div>
+                        <div class="small text-muted">Consultation Date: {{ invoice.appointment.appointment_date }}</div>
                     </div>
                 </div>
 
@@ -62,30 +65,30 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Item Description</th>
-                                <th class="text-end">Amount</th>
+                                <th class="text-end">Amount (INR)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <strong>Physician Consultation Fee</strong>
-                                    <div class="small text-muted">Doctor: {{ invoice.appointment.doctor }} ({{ invoice.appointment.department.name }})</div>
+                                    <strong>Physician OPD Consultation Fee</strong>
+                                    <div class="small text-muted">Specialist: {{ invoice.appointment.doctor }} ({{ invoice.appointment.department.name }})</div>
                                 </td>
-                                <td class="text-end fw-semibold">${{ invoice.consultation_fee }}</td>
+                                <td class="text-end fw-semibold">₹{{ invoice.consultation_fee }}</td>
                             </tr>
                             {% if invoice.medicine_charges > 0 %}
                                 <tr>
                                     <td>
-                                        <strong>Medications & Clinical Supplies</strong>
+                                        <strong>Medications, Ayurvedic Kashayam & Clinical Supplies</strong>
                                     </td>
-                                    <td class="text-end fw-semibold">${{ invoice.medicine_charges }}</td>
+                                    <td class="text-end fw-semibold">₹{{ invoice.medicine_charges }}</td>
                                 </tr>
                             {% endif %}
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th class="fs-5">Total Billed:</th>
-                                <th class="text-end fs-5 text-success">${{ invoice.total_amount }}</th>
+                                <th class="text-end fs-5 text-success">₹{{ invoice.total_amount }}</th>
                             </tr>
                         </tfoot>
                     </table>

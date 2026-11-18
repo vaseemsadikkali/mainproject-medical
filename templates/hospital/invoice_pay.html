@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Complete Payment - MediCare Hub{% endblock %}
+{% block title %}Checkout – Arogya Keralam Billing{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -8,51 +8,55 @@
         <div class="col-md-6 col-lg-5">
             <div class="card form-card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="fw-bold mb-0"><i class="bi bi-credit-card-fill text-teal me-2"></i> Checkout</h4>
+                    <h4 class="fw-bold mb-0"><i class="bi bi-credit-card-fill text-teal me-2"></i> Billing Settlement</h4>
                     <a href="{% url 'invoice_detail' invoice.id %}" class="btn btn-outline-secondary btn-sm">
                         <i class="bi bi-arrow-left"></i> Back
                     </a>
                 </div>
-                <p class="text-muted small">Select your payment method to settle Invoice #{{ invoice.invoice_number }}.</p>
+                <p class="text-muted small">Select your preferred payment mode for Invoice #{{ invoice.invoice_number }}.</p>
 
-                <div class="p-3 bg-light rounded-3 mb-4 text-center">
-                    <span class="text-muted small d-block">Amount Due:</span>
-                    <h2 class="fw-bold text-success mb-0">${{ invoice.total_amount }}</h2>
-                    <small class="text-muted">Doctor: {{ invoice.appointment.doctor }}</small>
+                <div class="p-3 bg-light rounded-3 mb-4 text-center border">
+                    <span class="text-muted small d-block">Amount Due (INR):</span>
+                    <h2 class="fw-bold text-success mb-0">₹{{ invoice.total_amount }}</h2>
+                    <small class="text-muted">Doctor: {{ invoice.appointment.doctor }} ({{ invoice.appointment.department.name }})</small>
                 </div>
 
                 <form method="POST">
                     {% csrf_token %}
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Choose Payment Method</label>
+                        <label class="form-label fw-semibold">Choose Indian Payment Method</label>
+                        
                         <div class="form-check p-3 border rounded mb-2 d-flex align-items-center gap-2">
-                            <input class="form-check-input ms-0" type="radio" name="payment_method" id="pay_card" value="card" checked>
-                            <label class="form-check-label fw-semibold flex-grow-1" for="pay_card">
-                                <i class="bi bi-credit-card me-2 text-primary"></i> Debit / Credit Card
-                            </label>
-                        </div>
-                        <div class="form-check p-3 border rounded mb-2 d-flex align-items-center gap-2">
-                            <input class="form-check-input ms-0" type="radio" name="payment_method" id="pay_upi" value="upi">
+                            <input class="form-check-input ms-0" type="radio" name="payment_method" id="pay_upi" value="upi" checked>
                             <label class="form-check-label fw-semibold flex-grow-1" for="pay_upi">
-                                <i class="bi bi-qr-code-scan me-2 text-info"></i> UPI / Online Payment
+                                <i class="bi bi-qr-code-scan me-2 text-primary"></i> UPI (GPay / PhonePe / Paytm / BHIM)
                             </label>
                         </div>
+
+                        <div class="form-check p-3 border rounded mb-2 d-flex align-items-center gap-2">
+                            <input class="form-check-input ms-0" type="radio" name="payment_method" id="pay_card" value="card">
+                            <label class="form-check-label fw-semibold flex-grow-1" for="pay_card">
+                                <i class="bi bi-credit-card me-2 text-info"></i> RuPay / Debit & Credit Card
+                            </label>
+                        </div>
+
                         <div class="form-check p-3 border rounded mb-2 d-flex align-items-center gap-2">
                             <input class="form-check-input ms-0" type="radio" name="payment_method" id="pay_insurance" value="insurance">
                             <label class="form-check-label fw-semibold flex-grow-1" for="pay_insurance">
-                                <i class="bi bi-shield-plus me-2 text-success"></i> Health Insurance Claim
+                                <i class="bi bi-shield-plus me-2 text-success"></i> Kerala Medisep / Health Insurance
                             </label>
                         </div>
+
                         <div class="form-check p-3 border rounded d-flex align-items-center gap-2">
                             <input class="form-check-input ms-0" type="radio" name="payment_method" id="pay_cash" value="cash">
                             <label class="form-check-label fw-semibold flex-grow-1" for="pay_cash">
-                                <i class="bi bi-cash me-2 text-secondary"></i> Pay at Hospital Counter (Cash)
+                                <i class="bi bi-cash-stack me-2 text-secondary"></i> Pay at Hospital Counter (Cash)
                             </label>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
-                        <i class="bi bi-lock-fill me-1"></i> Confirm & Complete Payment
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-semibold">
+                        <i class="bi bi-lock-fill me-1"></i> Pay ₹{{ invoice.total_amount }} & Settle
                     </button>
                 </form>
             </div>

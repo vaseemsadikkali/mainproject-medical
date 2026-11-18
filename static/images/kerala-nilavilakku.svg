@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" width="100" height="130">
+  <defs>
+    <linearGradient id="brassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="35%" stop-color="#FFB300"/>
+      <stop offset="70%" stop-color="#FF8F00"/>
+      <stop offset="100%" stop-color="#FFA000"/>
+    </linearGradient>
+    <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#D84315"/>
+      <stop offset="40%" stop-color="#FF5722"/>
+      <stop offset="75%" stop-color="#FFEB3B"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFEB3B" stop-opacity="0.9"/>
+      <stop offset="45%" stop-color="#FF9800" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FF9800" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="flameBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5"/>
+    </filter>
+  </defs>
+
+  <!-- Aura Glow -->
+  <circle cx="50" cy="18" r="18" fill="url(#glowGrad)"/>
+
+  <!-- Top Flame -->
+  <path d="M 50,4 C 47,11 44,17 46,22 C 48,26 52,26 54,22 C 56,17 53,11 50,4 Z" fill="url(#flameGrad)" filter="url(#flameBlur)"/>
+  <path d="M 50,7 C 48,13 46,17 48,21 C 49,24 51,24 52,21 C 54,17 52,13 50,7 Z" fill="#FFF9C4"/>
+
+  <!-- Nilavilakku Crown / Top Spire (Makudam) -->
+  <path d="M 48.5,22 L 51.5,22 L 52,26 L 48,26 Z" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="27" rx="3.5" ry="1.5" fill="url(#brassGrad)"/>
+  <path d="M 47,27 L 53,27 L 52,32 L 48,32 Z" fill="url(#brassGrad)"/>
+
+  <!-- Top Bowl (Deepathattu) with oil notch points -->
+  <ellipse cx="50" cy="33" rx="14" ry="4" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="32.5" rx="12" ry="2.5" fill="#FFE082"/>
+
+  <!-- Center Column (Thandu) with decorative rings -->
+  <path d="M 48,34 L 52,34 L 51.5,50 L 48.5,50 Z" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="51" rx="5" ry="2" fill="url(#brassGrad)"/>
+  <path d="M 47.5,52 L 52.5,52 L 52,72 L 48,72 Z" fill="url(#brassGrad)"/>
+
+  <!-- Middle Ornamental Ring (Mani) -->
+  <circle cx="50" cy="62" r="4.5" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="62" rx="6" ry="2" fill="#FFE082"/>
+
+  <!-- Lower Bowl (Veliya Thattu) -->
+  <ellipse cx="50" cy="74" rx="22" ry="6" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="73" rx="19.5" ry="4" fill="#FFE082"/>
+
+  <!-- Lower Stem -->
+  <path d="M 47,76 L 53,76 L 54,98 L 46,98 Z" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="88" rx="6" ry="2" fill="url(#brassGrad)"/>
+
+  <!-- Base Pedestal (Peedam) -->
+  <path d="M 45,98 L 55,98 L 62,112 L 38,112 Z" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="112" rx="24" ry="7" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="118" rx="28" ry="7.5" fill="url(#brassGrad)"/>
+  <path d="M 22,118 L 78,118 L 76,124 L 24,124 Z" fill="url(#brassGrad)"/>
+  <ellipse cx="50" cy="124" rx="26" ry="5.5" fill="#C79100"/>
+</svg>

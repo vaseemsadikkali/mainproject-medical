@@ -1,191 +1,336 @@
 {% extends 'base.html' %}
-
-{% block title %}MediCare Hub - Role-Based Healthcare Management{% endblock %}
+{% block title %}Arogya Keralam – Kerala Healthcare & Super-Specialty Network{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+
+<!-- ===================== KERALA HERO SECTION ===================== -->
 <section class="hero-section">
-    <div class="container text-center py-4">
-        <span class="badge bg-white text-dark px-3 py-2 rounded-pill fw-semibold mb-3 shadow-sm">
-            <i class="bi bi-shield-check text-success me-1"></i> Multi-Role Hospital Management System
-        </span>
-        <h1 class="display-4 fw-bold mb-3">Healthcare Management Made Simple</h1>
-        <p class="lead mb-4 mx-auto" style="max-width: 700px; opacity: 0.95;">
-            An integrated role-based application for Hospital Administrators, Medical Staff & Doctors, and Patients. Seamless appointment booking, prescriptions, clinical records, and analytics.
-        </p>
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            {% if user.is_authenticated %}
-                <a href="{% url 'dashboard_redirect' %}" class="btn btn-light btn-lg px-4 fw-semibold text-primary shadow">
-                    <i class="bi bi-speedometer2 me-2"></i> Go to Dashboard
-                </a>
-                <a href="{% url 'appointment_book' %}" class="btn btn-outline-light btn-lg px-4">
-                    <i class="bi bi-calendar-plus me-2"></i> Book Appointment
-                </a>
-            {% else %}
-                <a href="{% url 'appointment_book' %}" class="btn btn-light btn-lg px-4 fw-semibold text-primary shadow">
-                    <i class="bi bi-calendar-plus me-2"></i> Book Appointment
-                </a>
-                <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">
-                    <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Portal
-                </a>
-            {% endif %}
-        </div>
+  <div class="container text-center position-relative">
+    
+    <!-- Kerala Nilavilakku + Badge -->
+    <div class="d-flex justify-content-center mb-2">
+      <img src="/static/images/kerala-nilavilakku.svg" alt="Kerala Nilavilakku" style="width:58px;height:72px;filter:drop-shadow(0 4px 15px rgba(254,240,138,0.5));">
     </div>
+    
+    <div class="hero-badge">
+      <i class="bi bi-shield-check text-warning"></i>
+      <span>God's Own Healthcare · കേരളത്തിന്റെ സ്വന്തം ആരോഗ്യ ശൃംഖല</span>
+    </div>
+
+    <h1 class="hero-title text-white">
+      Arogya Keralam<br>
+      <span style="color:#fef08a;font-family:'Poppins',sans-serif;font-weight:700;">ആരോഗ്യകേരളം</span>
+    </h1>
+    
+    <p class="hero-subtitle mx-auto">
+      Kerala's premier integrated healthcare network combining advanced super-specialty medicine and traditional Ayurvedic healing. Seamless OPD bookings, electronic prescriptions, and transparent INR (₹) billing across Kochi, Trivandrum, Kozhikode, and Kottayam.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard_redirect' %}" class="btn btn-lg px-5 py-3 fw-bold rounded-3 shadow-lg"
+           style="background:#fef3c7;color:#064e3b;font-size:.95rem;">
+          <i class="bi bi-speedometer2 me-2"></i> My Dashboard
+        </a>
+        <a href="{% url 'appointment_book' %}" class="btn btn-lg px-5 py-3 fw-semibold rounded-3"
+           style="background:rgba(255,255,255,.18);color:white;border:1.5px solid rgba(255,255,255,.4);backdrop-filter:blur(8px);font-size:.95rem;">
+          <i class="bi bi-calendar-plus me-2"></i> Book Consultation (₹)
+        </a>
+      {% else %}
+        <a href="{% url 'appointment_book' %}" class="btn btn-lg px-5 py-3 fw-bold rounded-3 shadow-lg"
+           style="background:#fef3c7;color:#064e3b;font-size:.95rem;">
+          <i class="bi bi-calendar-plus me-2"></i> Book OPD Consultation
+        </a>
+        <a href="{% url 'login' %}" class="btn btn-lg px-5 py-3 fw-semibold rounded-3"
+           style="background:rgba(255,255,255,.18);color:white;border:1.5px solid rgba(255,255,255,.4);backdrop-filter:blur(8px);font-size:.95rem;">
+          <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Portal
+        </a>
+      {% endif %}
+    </div>
+  </div>
 </section>
 
-<!-- Stats Bar -->
-<div class="container" style="margin-top: -30px;">
+<!-- ===================== STAT STRIP ===================== -->
+<div class="container" style="margin-top:-32px;position:relative;z-index:10;">
+  <div class="row g-3">
+    <div class="col-md-3 col-6">
+      <div class="card stat-card text-center py-3 border-top border-3" style="border-top-color:#047857!important;">
+        <div class="stat-num text-teal">{{ total_doctors }}</div>
+        <div class="small fw-semibold text-muted mt-1"><i class="bi bi-person-badge me-1 text-teal"></i> Kerala Doctors</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card stat-card text-center py-3 border-top border-3" style="border-top-color:#d97706!important;">
+        <div class="stat-num text-gold">{{ total_departments }}</div>
+        <div class="small fw-semibold text-muted mt-1"><i class="bi bi-hospital me-1 text-warning"></i> Clinical Units</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card stat-card text-center py-3 border-top border-3" style="border-top-color:#0284c7!important;">
+        <div class="stat-num" style="color:var(--secondary);">{{ total_patients }}</div>
+        <div class="small fw-semibold text-muted mt-1"><i class="bi bi-people me-1 text-info"></i> Registered Patients</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card stat-card text-center py-3 border-top border-3" style="border-top-color:#10b981!important;">
+        <div class="stat-num" style="color:var(--success);">{{ completed_appointments }}</div>
+        <div class="small fw-semibold text-muted mt-1"><i class="bi bi-check2-all me-1 text-success"></i> Consultations Done</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 3 USER ROLES ===================== -->
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <span class="badge px-3 py-2 mb-3 rounded-pill" style="background:var(--kerala-gold-light);color:var(--kerala-gold-dark);font-size:.82rem;font-weight:700;">
+      <i class="bi bi-shield-lock me-1"></i> ROLE-BASED ACCESS CONTROL (RBAC)
+    </span>
+    <h2 class="fw-bold mb-2" style="font-size:clamp(1.6rem,3vw,2.2rem);">Three Distinct Kerala Healthcare Portals</h2>
+    <p class="text-muted" style="max-width:560px;margin:0 auto;">Dedicated interfaces designed for hospital directors, attending physicians, and patients.</p>
+  </div>
+
+  <div class="row g-4">
+    <!-- Admin Role -->
+    <div class="col-md-4">
+      <div class="feature-card border-top border-4" style="border-top-color:#dc2626!important;">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="d-flex align-items-center justify-content-center rounded-3"
+               style="width:52px;height:52px;background:#fee2e2;">
+            <i class="bi bi-shield-lock-fill" style="font-size:1.4rem;color:#b91c1c;"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-0">Hospital Admin</h5>
+            <span class="badge role-admin px-2 mt-1" style="font-size:.72rem;">FULL CONTROL</span>
+          </div>
+        </div>
+        <ul class="list-unstyled mb-0" style="font-size:.88rem;color:var(--dark-3);">
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-danger mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>User administration across all Kerala hospital branches</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-danger mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Interactive Chart.js revenue dashboards in INR (₹)</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-danger mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Department & doctor profile CRUD operations</span>
+          </li>
+          <li class="d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-danger mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Full Django admin integration with pre-configured filters</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Doctor / Staff Role -->
+    <div class="col-md-4">
+      <div class="feature-card border-top border-4" style="border-top-color:var(--secondary)!important;">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="d-flex align-items-center justify-content-center rounded-3"
+               style="width:52px;height:52px;background:#e0f2fe;">
+            <i class="bi bi-heart-pulse-fill" style="font-size:1.4rem;color:#0284c7;"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-0">Doctor / Staff</h5>
+            <span class="badge role-staff px-2 mt-1" style="font-size:.72rem;">PARTIAL CONTROL</span>
+          </div>
+        </div>
+        <ul class="list-unstyled mb-0" style="font-size:.88rem;color:var(--dark-3);">
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-info mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Doctor workspace with daily patient queue management</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-info mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Issue digital prescriptions and clinical diagnoses</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-info mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Upload and review lab reports, radiology & scans</span>
+          </li>
+          <li class="d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-info mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>One-click status updates: Confirm, Complete, or Reschedule</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Patient Role -->
+    <div class="col-md-4">
+      <div class="feature-card border-top border-4" style="border-top-color:#047857!important;">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="d-flex align-items-center justify-content-center rounded-3"
+               style="width:52px;height:52px;background:var(--primary-light);">
+            <i class="bi bi-person-heart" style="font-size:1.4rem;color:#047857;"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold mb-0">Patient / Citizen</h5>
+            <span class="badge role-patient px-2 mt-1" style="font-size:.72rem;">BASIC ACCESS</span>
+          </div>
+        </div>
+        <ul class="list-unstyled mb-0" style="font-size:.88rem;color:var(--dark-3);">
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Online OPD consultation booking across departments</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Download & print doctor prescriptions with Rx header</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>INR (₹) billing invoices with UPI & Net Banking checkout</span>
+          </li>
+          <li class="d-flex align-items-start gap-2">
+            <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0" style="font-size:.85rem;"></i>
+            <span>Medical history, blood group & emergency profile record</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Kasavu Divider -->
+<div class="kasavu-strip-lg my-2"></div>
+
+<!-- ===================== CLINICAL DEPARTMENTS ===================== -->
+<div style="background:white;padding:50px 0;">
+  <div class="container">
+    <div class="section-header mb-4">
+      <div>
+        <h3 class="section-title fw-bold">
+          <span class="title-icon"><i class="bi bi-hospital"></i></span>
+          Specialized Clinical Departments
+        </h3>
+        <p class="text-muted small mb-0">Modern super-specialty medicine and traditional Kerala Ayurvedic care</p>
+      </div>
+      <a href="{% url 'departments_list' %}" class="btn btn-sm px-4 rounded-pill border fw-semibold"
+         style="border-color:var(--border)!important;color:var(--dark-3);font-size:.85rem;">
+        View All Departments <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+
     <div class="row g-3">
-        <div class="col-md-3 col-6">
-            <div class="card stat-card p-3 text-center">
-                <h3 class="fw-bold text-primary mb-1">{{ total_doctors }}</h3>
-                <span class="text-muted small fw-semibold">Specialist Doctors</span>
+      {% for dept in departments %}
+        <div class="col-lg-4 col-md-6">
+          <div class="dept-card p-4 h-100">
+            <div class="dept-icon-wrap">
+              <i class="bi {{ dept.icon|default:'bi-hospital' }}"></i>
             </div>
+            <h5 class="fw-bold mb-2">{{ dept.name }}</h5>
+            <p class="text-muted small mb-3" style="line-height:1.65;">{{ dept.description|truncatewords:14 }}</p>
+            <a href="{% url 'doctors_list' %}?department={{ dept.id }}"
+               class="text-decoration-none small fw-bold d-inline-flex align-items-center gap-1 text-teal">
+              View Specialists <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
         </div>
-        <div class="col-md-3 col-6">
-            <div class="card stat-card p-3 text-center">
-                <h3 class="fw-bold text-success mb-1">{{ total_departments }}</h3>
-                <span class="text-muted small fw-semibold">Departments</span>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card stat-card p-3 text-center">
-                <h3 class="fw-bold text-info mb-1">{{ total_patients }}</h3>
-                <span class="text-muted small fw-semibold">Registered Patients</span>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card stat-card p-3 text-center">
-                <h3 class="fw-bold text-warning mb-1">{{ completed_appointments }}</h3>
-                <span class="text-muted small fw-semibold">Completed Visits</span>
-            </div>
-        </div>
+      {% endfor %}
     </div>
+  </div>
 </div>
 
-<!-- Features Section: 3 Roles Breakdown -->
+<!-- ===================== DOCTORS DIRECTORY (INR ₹) ===================== -->
 <div class="container py-5">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold">Role-Based Access Control</h2>
-        <p class="text-muted">Designed specifically around the three core stakeholder roles</p>
+  <div class="section-header mb-4">
+    <div>
+      <h3 class="section-title fw-bold">
+        <span class="title-icon"><i class="bi bi-person-badge"></i></span>
+        Specialist Medical Doctors
+      </h3>
+      <p class="text-muted small mb-0">Certified physicians across Kerala's prominent medical colleges</p>
     </div>
+    <a href="{% url 'doctors_list' %}" class="btn btn-sm px-4 rounded-pill border fw-semibold"
+       style="border-color:var(--border)!important;color:var(--dark-3);font-size:.85rem;">
+      Find Doctors <i class="bi bi-search ms-1"></i>
+    </a>
+  </div>
 
-    <div class="row g-4">
-        <!-- Admin Role -->
-        <div class="col-md-4">
-            <div class="card h-100 p-4 border-0 shadow-sm rounded-4">
-                <div class="stat-icon bg-danger bg-opacity-10 text-danger mb-3">
-                    <i class="bi bi-shield-lock-fill"></i>
-                </div>
-                <h4 class="fw-bold">Administrator</h4>
-                <span class="badge bg-danger-subtle text-danger mb-3 align-self-start">Full Control</span>
-                <p class="text-muted small">
-                    Manage users, assign roles, maintain departments and doctor profiles, view system-wide revenue, and examine graphical analytics.
-                </p>
-                <ul class="list-unstyled small text-muted mt-auto mb-0">
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-danger me-1"></i> User role management</li>
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-danger me-1"></i> Interactive analytics charts</li>
-                    <li><i class="bi bi-check-circle-fill text-danger me-1"></i> Full database CRUD access</li>
-                </ul>
-            </div>
-        </div>
+  <div class="row g-4">
+    {% for doc in doctors %}
+      <div class="col-lg-4 col-md-6">
+        <div class="doctor-card p-4 h-100 text-center">
+          <div class="d-flex justify-content-end mb-2">
+            <span class="d-flex align-items-center gap-1 small fw-semibold text-success" style="font-size:.78rem;">
+              <span class="pulse-available"></span> Available
+            </span>
+          </div>
 
-        <!-- Staff / Doctor Role -->
-        <div class="col-md-4">
-            <div class="card h-100 p-4 border-0 shadow-sm rounded-4">
-                <div class="stat-icon bg-info bg-opacity-10 text-info mb-3">
-                    <i class="bi bi-heart-pulse-fill"></i>
-                </div>
-                <h4 class="fw-bold">Doctor / Staff</h4>
-                <span class="badge bg-info-subtle text-info mb-3 align-self-start">Partial Control</span>
-                <p class="text-muted small">
-                    Doctors review assigned patients, manage daily schedules, confirm or complete appointments, create clinical diagnoses, and issue prescriptions with report attachments.
-                </p>
-                <ul class="list-unstyled small text-muted mt-auto mb-0">
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-info me-1"></i> Today's patient schedule</li>
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-info me-1"></i> Prescriptions & diagnosis</li>
-                    <li><i class="bi bi-check-circle-fill text-info me-1"></i> Lab report uploads</li>
-                </ul>
-            </div>
-        </div>
+          <div class="doctor-avatar">
+            <i class="bi bi-person-badge-fill"></i>
+          </div>
+          <h5 class="fw-bold mb-1">{{ doc }}</h5>
+          <div class="badge px-3 py-2 mb-2 rounded-pill" style="background:var(--primary-light);color:var(--primary);font-size:.78rem;">
+            {{ doc.specialization }}
+          </div>
 
-        <!-- Patient Role -->
-        <div class="col-md-4">
-            <div class="card h-100 p-4 border-0 shadow-sm rounded-4">
-                <div class="stat-icon bg-success bg-opacity-10 text-success mb-3">
-                    <i class="bi bi-person-heart"></i>
-                </div>
-                <h4 class="fw-bold">Patient / User</h4>
-                <span class="badge bg-success-subtle text-success mb-3 align-self-start">Basic Access</span>
-                <p class="text-muted small">
-                    Patients explore doctors and clinical departments, book appointments, view visit histories, download doctor prescriptions, and track billing invoices.
-                </p>
-                <ul class="list-unstyled small text-muted mt-auto mb-0">
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-1"></i> Online appointment booking</li>
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-1"></i> Prescription & medical history</li>
-                    <li><i class="bi bi-check-circle-fill text-success me-1"></i> Invoices & digital payments</li>
-                </ul>
+          <div class="text-muted small mb-3" style="line-height:1.5;">
+            <div><i class="bi bi-mortarboard me-1 text-teal"></i> {{ doc.qualification }}</div>
+            <div class="mt-1"><i class="bi bi-geo-alt me-1 text-danger"></i> {{ doc.room_number }} · {{ doc.available_days }}</div>
+          </div>
+
+          <div class="d-flex justify-content-around p-3 rounded-3 mb-3"
+               style="background:var(--bg-main);border:1px solid var(--border);">
+            <div>
+              <div class="fw-bold fs-5 text-dark">{{ doc.experience_years }}+</div>
+              <div class="text-muted small" style="font-size:.74rem;">Years Exp.</div>
             </div>
+            <div class="border-start"></div>
+            <div>
+              <div class="fw-bold fs-5 text-success">₹{{ doc.consultation_fee }}</div>
+              <div class="text-muted small" style="font-size:.74rem;">OPD Fee (INR)</div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-center">
+            <a href="{% url 'doctor_detail' doc.id %}" class="btn btn-sm px-3 py-2 rounded-3 border fw-semibold flex-grow-1"
+               style="border-color:var(--border)!important;font-size:.84rem;color:var(--dark-3);">
+              Profile
+            </a>
+            <a href="{% url 'appointment_book' %}?doctor={{ doc.id }}&department={{ doc.department.id }}"
+               class="btn btn-primary-custom btn-sm px-3 py-2 flex-grow-1" style="font-size:.84rem;">
+              Book OPD
+            </a>
+            {% if user.is_admin %}
+              <a href="{% url 'doctor_edit' doc.id %}" class="btn btn-sm py-2 px-2 rounded-3 btn-outline-warning" title="Edit Profile">
+                <i class="bi bi-pencil small"></i>
+              </a>
+            {% endif %}
+          </div>
         </div>
-    </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>
 
-<!-- Featured Departments -->
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="fw-bold mb-0">Specialized Departments</h3>
-            <p class="text-muted small mb-0">Expert medical care across multiple clinical fields</p>
-        </div>
-        <a href="{% url 'departments_list' %}" class="btn btn-outline-primary btn-sm">View All</a>
+<!-- ===================== CTA BANNER ===================== -->
+{% if not user.is_authenticated %}
+<div class="py-5 text-white" style="background:linear-gradient(135deg,#064e3b 0%,#047857 50%,#0284c7 100%);">
+  <div class="container text-center">
+    <div class="d-flex justify-content-center mb-3">
+      <img src="/static/images/kerala-nilavilakku.svg" alt="Kerala Lamp" style="width:48px;height:60px;">
     </div>
-
-    <div class="row g-4">
-        {% for dept in departments %}
-            <div class="col-md-4 col-sm-6">
-                <div class="card dept-card p-4 h-100">
-                    <div class="stat-icon bg-light text-primary mb-3">
-                        <i class="bi {{ dept.icon|default:'bi-hospital' }}"></i>
-                    </div>
-                    <h5 class="fw-bold">{{ dept.name }}</h5>
-                    <p class="text-muted small mb-3">{{ dept.description|truncatewords:15 }}</p>
-                    <a href="{% url 'doctors_list' %}?department={{ dept.id }}" class="text-decoration-none small fw-semibold text-primary mt-auto">
-                        View Doctors <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        {% endfor %}
+    <h2 class="fw-bold mb-2">Join Kerala's Unified Healthcare Platform</h2>
+    <p class="mb-4 opacity-90 mx-auto" style="max-width:600px;">
+      Register in under a minute to book OPD consultations, download electronic prescriptions, and track your healthcare history with Arogya Keralam.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{% url 'register' %}" class="btn btn-lg px-5 py-3 fw-bold rounded-3 shadow"
+         style="background:#fef3c7;color:#064e3b;">
+        <i class="bi bi-person-plus me-2"></i> Register Patient Account
+      </a>
+      <a href="{% url 'login' %}" class="btn btn-lg px-5 py-3 fw-semibold rounded-3"
+         style="background:rgba(255,255,255,.18);color:white;border:1.5px solid rgba(255,255,255,.35);">
+        <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Portal
+      </a>
     </div>
+  </div>
 </div>
+{% endif %}
 
-<!-- Featured Doctors -->
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="fw-bold mb-0">Our Expert Doctors</h3>
-            <p class="text-muted small mb-0">Qualified medical practitioners ready for your consultation</p>
-        </div>
-        <a href="{% url 'doctors_list' %}" class="btn btn-outline-primary btn-sm">Find Doctor</a>
-    </div>
-
-    <div class="row g-4">
-        {% for doc in doctors %}
-            <div class="col-md-4 col-sm-6">
-                <div class="card doctor-card p-4 h-100 text-center">
-                    <div class="rounded-circle bg-light text-primary mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; font-size: 2.2rem;">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
-                    <h5 class="fw-bold mb-1">{{ doc }}</h5>
-                    <span class="badge bg-light text-secondary mb-2">{{ doc.specialization }}</span>
-                    <p class="small text-muted mb-2"><i class="bi bi-mortarboard me-1"></i> {{ doc.qualification }}</p>
-                    <div class="small fw-semibold text-success mb-3">Fee: ${{ doc.consultation_fee }}</div>
-                    <div class="mt-auto d-flex gap-2 justify-content-center">
-                        <a href="{% url 'doctor_detail' doc.id %}" class="btn btn-outline-secondary btn-sm">Details</a>
-                        <a href="{% url 'appointment_book' %}?doctor={{ doc.id }}&department={{ doc.department.id }}" class="btn btn-primary-custom btn-sm">Book</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>
 {% endblock %}

@@ -8,22 +8,23 @@ from hospital.models import Department, Doctor, Appointment, MedicalRecord, Bill
 
 
 class Command(BaseCommand):
-    help = 'Seeds database with sample roles, departments, doctors, appointments, medical records, and invoices'
+    help = 'Seeds database with Kerala-themed departments, doctors, patients, appointments, medical records, and INR invoices'
 
     def handle(self, *args, **kwargs):
-        self.stdout.write(self.style.NOTICE("Starting database seed..."))
+        self.stdout.write(self.style.NOTICE("Starting Kerala Arogya Keralam database seed..."))
 
         # 1. Create Admin User
-        admin_user, created = User.objects.get_or_create(
+        admin_user, _ = User.objects.get_or_create(
             username='admin',
             defaults={
-                'email': 'admin@medicarehub.org',
-                'first_name': 'Alexander',
-                'last_name': 'Wright',
+                'email': 'admin@arogyakeralam.gov.in',
+                'first_name': 'Dr. K. S.',
+                'last_name': 'Radhakrishnan',
                 'role': 'admin',
                 'is_staff': True,
                 'is_superuser': True,
-                'phone': '+1 (555) 010-0001',
+                'phone': '+91 94470 12345',
+                'address': 'Kerala Health Mission Directorate, Thiruvananthapuram, Kerala - 695001'
             }
         )
         admin_user.set_password('Admin@1234')
@@ -31,39 +32,39 @@ class Command(BaseCommand):
         admin_user.is_staff = True
         admin_user.is_superuser = True
         admin_user.save()
-        self.stdout.write(self.style.SUCCESS(f"Admin ready: {admin_user.username}"))
+        self.stdout.write(self.style.SUCCESS(f"Administrator ready: {admin_user.username}"))
 
-        # 2. Create Departments
+        # 2. Kerala Departments (Modern & Ayurvedic Healthcare)
         depts_data = [
+            {
+                'name': 'Ayurveda & Panchakarma',
+                'icon': 'bi-flower1',
+                'description': 'Traditional Kerala Ayurvedic rejuvenation, Panchakarma detox, herbal healing, and holistic wellness.'
+            },
             {
                 'name': 'Cardiology',
                 'icon': 'bi-heart-pulse',
-                'description': 'Comprehensive cardiovascular care including ECG, echocardiogram, and coronary heart disease management.'
+                'description': 'Advanced cardiovascular care, coronary angiography, echocardiogram, and lifestyle heart disease management.'
             },
             {
                 'name': 'Neurology',
                 'icon': 'bi-brain',
-                'description': 'Specialized diagnosis and treatment of brain, spinal cord, and central nervous system disorders.'
+                'description': 'Comprehensive diagnosis and treatment for brain, stroke care, epilepsy, and neurological rehabilitation.'
             },
             {
                 'name': 'Pediatrics',
                 'icon': 'bi-emoji-smile',
-                'description': 'Dedicated compassionate healthcare for infants, children, and adolescents.'
+                'description': 'Child healthcare, neonatal care, developmental milestones, and routine immunization.'
             },
             {
-                'name': 'Orthopedics',
+                'name': 'Orthopedics & Joint Care',
                 'icon': 'bi-bandaid',
-                'description': 'Treatment for musculoskeletal conditions, sports injuries, joint replacements, and bone health.'
-            },
-            {
-                'name': 'Dermatology',
-                'icon': 'bi-shield-plus',
-                'description': 'Advanced medical and cosmetic skin care, allergy treatment, and dermatological therapies.'
+                'description': 'Specialized orthopedic surgery, arthroscopy, joint replacement, and sports trauma rehabilitation.'
             },
             {
                 'name': 'General Medicine',
                 'icon': 'bi-hospital',
-                'description': 'Primary care, annual check-ups, preventative wellness, and chronic illness management.'
+                'description': 'Primary healthcare, seasonal fever management, diabetes care, and lifestyle disease prevention.'
             },
         ]
 
@@ -78,61 +79,74 @@ class Command(BaseCommand):
                 }
             )
             departments[d_info['name']] = dept
-        self.stdout.write(self.style.SUCCESS(f"Seeded {len(departments)} departments."))
+        self.stdout.write(self.style.SUCCESS(f"Seeded {len(departments)} Kerala medical departments."))
 
-        # 3. Create Doctors / Staff Users
+        # 3. Kerala Specialist Doctors
         doctors_info = [
             {
                 'username': 'dr_smith',
-                'email': 'smith@medicarehub.org',
-                'first_name': 'Robert',
-                'last_name': 'Smith',
+                'email': 'dr.harikrishnan@arogyakeralam.org',
+                'first_name': 'Harikrishnan',
+                'last_name': 'Nair',
                 'dept': 'Cardiology',
                 'specialization': 'Senior Interventional Cardiologist',
-                'qualification': 'MBBS, MD (Cardiology), FACC',
-                'experience': 14,
-                'fee': Decimal('150.00'),
-                'room': '302-A',
-                'bio': 'Dr. Robert Smith has over 14 years of clinical experience in interventional cardiology and preventative vascular medicine.'
+                'qualification': 'MBBS, MD, DM (Cardiology) - Govt. Medical College Trivandrum',
+                'experience': 16,
+                'fee': Decimal('800.00'),
+                'room': 'Block A - Room 204',
+                'bio': 'Dr. Harikrishnan Nair is a seasoned cardiologist with 16+ years of practice at Trivandrum & Kochi, specializing in preventative cardiology and vascular wellness.'
             },
             {
                 'username': 'dr_sarah',
-                'email': 'sarah@medicarehub.org',
-                'first_name': 'Sarah',
-                'last_name': 'Jenkins',
+                'email': 'dr.ananya@arogyakeralam.org',
+                'first_name': 'Ananya',
+                'last_name': 'Menon',
                 'dept': 'Pediatrics',
-                'specialization': 'Consultant Pediatrician',
-                'qualification': 'MBBS, DCH, MD (Pediatrics)',
-                'experience': 9,
-                'fee': Decimal('100.00'),
-                'room': '104',
-                'bio': 'Dr. Sarah Jenkins is renowned for her warm bedside manner with young children and expertise in pediatric developmental milestones.'
+                'specialization': 'Consultant Pediatrician & Neonatologist',
+                'qualification': 'MBBS, DCH, MD (Pediatrics) - Govt. Medical College Calicut',
+                'experience': 10,
+                'fee': Decimal('500.00'),
+                'room': 'Block B - Room 108',
+                'bio': 'Dr. Ananya Menon specializes in pediatric wellness, child developmental assessments, and childhood asthma prevention.'
             },
             {
                 'username': 'dr_emily',
-                'email': 'emily@medicarehub.org',
-                'first_name': 'Emily',
-                'last_name': 'Chen',
+                'email': 'dr.fathima@arogyakeralam.org',
+                'first_name': 'Fathima',
+                'last_name': 'Rahiman',
                 'dept': 'Neurology',
-                'specialization': 'Clinical Neurologist',
-                'qualification': 'MBBS, DM (Neurology)',
-                'experience': 11,
-                'fee': Decimal('180.00'),
-                'room': '210-B',
-                'bio': 'Dr. Emily Chen specializes in headache disorders, epilepsy management, and neurological rehabilitation.'
+                'specialization': 'Chief Clinical Neurologist',
+                'qualification': 'MBBS, MD, DM (Neurology) - Kochi Super Specialty Institute',
+                'experience': 12,
+                'fee': Decimal('850.00'),
+                'room': 'Block A - Room 310',
+                'bio': 'Dr. Fathima Rahiman has extensive clinical expertise in migraine management, stroke recovery, and neuromuscular disorders.'
             },
             {
                 'username': 'dr_marcus',
-                'email': 'marcus@medicarehub.org',
-                'first_name': 'Marcus',
-                'last_name': 'Vance',
-                'dept': 'Orthopedics',
-                'specialization': 'Orthopedic & Joint Surgeon',
-                'qualification': 'MBBS, MS (Ortho), MCh',
-                'experience': 16,
-                'fee': Decimal('160.00'),
-                'room': '401',
-                'bio': 'Specialist in minimally invasive arthroscopic surgery and sports joint rehabilitation.'
+                'email': 'dr.mathew@arogyakeralam.org',
+                'first_name': 'Mathew',
+                'last_name': 'Varghese',
+                'dept': 'Orthopedics & Joint Care',
+                'specialization': 'Orthopedic & Arthroscopic Surgeon',
+                'qualification': 'MBBS, MS (Ortho) - GMC Kottayam, Fellow Arthroscopy UK',
+                'experience': 15,
+                'fee': Decimal('750.00'),
+                'room': 'Block C - Room 102',
+                'bio': 'Senior consultant specializing in knee & shoulder arthroscopy, joint replacement, and sports trauma recovery.'
+            },
+            {
+                'username': 'dr_padmanabhan',
+                'email': 'dr.padmanabhan@arogyakeralam.org',
+                'first_name': 'Padmanabhan',
+                'last_name': 'Vaidyan',
+                'dept': 'Ayurveda & Panchakarma',
+                'specialization': 'Ayurvedic Physician & Panchakarma Specialist',
+                'qualification': 'BAMS, MD (Ayurveda) - Govt. Ayurveda College Thiruvananthapuram',
+                'experience': 18,
+                'fee': Decimal('600.00'),
+                'room': 'Ayur Saukhyam - Room 001',
+                'bio': 'Traditional Kerala Ayurvedic doctor with 18+ years of heritage healing in Panchakarma, arthritis treatment, and Rasayana therapy.'
             }
         ]
 
@@ -146,9 +160,11 @@ class Command(BaseCommand):
                     'last_name': d['last_name'],
                     'role': 'staff',
                     'is_staff': True,
-                    'phone': '+1 (555) 012-3456',
+                    'phone': '+91 94471 00000',
                 }
             )
+            doc_user.first_name = d['first_name']
+            doc_user.last_name = d['last_name']
             doc_user.set_password('Doctor@1234')
             doc_user.role = 'staff'
             doc_user.is_staff = True
@@ -167,40 +183,49 @@ class Command(BaseCommand):
                     'is_available': True,
                 }
             )
+            doctor_obj.department = departments[d['dept']]
+            doctor_obj.specialization = d['specialization']
+            doctor_obj.qualification = d['qualification']
+            doctor_obj.consultation_fee = d['fee']
+            doctor_obj.room_number = d['room']
+            doctor_obj.save()
             doctors.append(doctor_obj)
-        self.stdout.write(self.style.SUCCESS(f"Seeded {len(doctors)} doctors."))
+        self.stdout.write(self.style.SUCCESS(f"Seeded {len(doctors)} Kerala specialist doctors."))
 
-        # 4. Create Patients
+        # 4. Kerala Patient Profiles
         patients_info = [
             {
                 'username': 'john_doe',
-                'email': 'john.doe@example.com',
-                'first_name': 'John',
-                'last_name': 'Doe',
-                'phone': '+1 (555) 987-6543',
+                'email': 'rahul.chandran@gmail.com',
+                'first_name': 'Rahul',
+                'last_name': 'Chandran',
+                'phone': '+91 98471 23456',
                 'blood_group': 'O+',
-                'allergies': 'Penicillin',
-                'history': 'Hypertension diagnosed in 2021'
+                'allergies': 'Penicillin, Dust allergies',
+                'history': 'Hypertension under management since 2021',
+                'address': 'Flat 4B, Marine Drive Towers, Kochi, Kerala - 682031'
             },
             {
                 'username': 'lisa_wong',
-                'email': 'lisa.wong@example.com',
-                'first_name': 'Lisa',
-                'last_name': 'Wong',
-                'phone': '+1 (555) 321-7654',
+                'email': 'deepa.nambiar@gmail.com',
+                'first_name': 'Deepa',
+                'last_name': 'Nambiar',
+                'phone': '+91 94470 65432',
                 'blood_group': 'A+',
                 'allergies': 'None',
-                'history': 'Mild seasonal asthma'
+                'history': 'Mild seasonal allergic rhinitis',
+                'address': 'Nambiar Kovilakam, Mavoor Road, Kozhikode, Kerala - 673004'
             },
             {
                 'username': 'david_miller',
-                'email': 'david.miller@example.com',
-                'first_name': 'David',
-                'last_name': 'Miller',
-                'phone': '+1 (555) 456-7890',
-                'blood_group': 'B-',
+                'email': 'george.joseph@gmail.com',
+                'first_name': 'George',
+                'last_name': 'Joseph',
+                'phone': '+91 97455 78901',
+                'blood_group': 'B+',
                 'allergies': 'Sulfa drugs',
-                'history': 'Previous meniscus repair (2023)'
+                'history': 'Right knee meniscus arthroscopy in 2023',
+                'address': 'Kallara House, Baker Junction, Kottayam, Kerala - 686001'
             }
         ]
 
@@ -214,8 +239,11 @@ class Command(BaseCommand):
                     'last_name': p['last_name'],
                     'role': 'patient',
                     'phone': p['phone'],
+                    'address': p['address'],
                 }
             )
+            p_user.first_name = p['first_name']
+            p_user.last_name = p['last_name']
             p_user.set_password('Patient@1234')
             p_user.role = 'patient'
             p_user.save()
@@ -224,102 +252,104 @@ class Command(BaseCommand):
             profile.blood_group = p['blood_group']
             profile.allergies = p['allergies']
             profile.medical_history = p['history']
-            profile.emergency_contact_name = 'Mary ' + p['last_name']
-            profile.emergency_contact_phone = '+1 (555) 000-9999'
+            profile.emergency_contact_name = 'Sujatha ' + p['last_name']
+            profile.emergency_contact_phone = '+91 94470 99999'
             profile.save()
 
             patients.append(p_user)
-        self.stdout.write(self.style.SUCCESS(f"Seeded {len(patients)} patients."))
+        self.stdout.write(self.style.SUCCESS(f"Seeded {len(patients)} Kerala patients."))
 
-        # 5. Create Sample Appointments & Medical Records & Invoices
+        # 5. Sample Appointments with INR Invoices & Prescriptions
+        # Clean existing sample appointments to reload cleanly
+        Appointment.objects.all().delete()
         today = timezone.localdate()
-        
+
         sample_appointments = [
-            # 1. Today's confirmed appointment for Dr. Smith
+            # 1. Today's confirmed Cardiology appointment in Kochi
             {
                 'patient': patients[0],
                 'doctor': doctors[0],
                 'dept': doctors[0].department,
                 'date': today,
                 'time': time(10, 30),
-                'reason': 'Routine blood pressure review and mild chest tightness after exercise.',
+                'reason': 'Blood pressure review and routine ECG examination at Kochi Clinic.',
                 'status': 'confirmed',
-                'notes': 'Patient advised to bring previous ECG readings.',
+                'notes': 'Advised patient to bring prior reports from Ernakulam General Hospital.',
                 'create_record': False,
                 'paid': False,
             },
-            # 2. Today's pending appointment for Dr. Sarah
+            # 2. Today's pending Pediatrics appointment with Dr. Ananya Menon
             {
                 'patient': patients[1],
                 'doctor': doctors[1],
                 'dept': doctors[1].department,
                 'date': today,
                 'time': time(14, 0),
-                'reason': 'Annual developmental pediatric checkup and immunization update.',
+                'reason': 'Pediatric annual growth monitoring and MMR vaccination checkup.',
                 'status': 'pending',
                 'notes': '',
                 'create_record': False,
                 'paid': False,
             },
-            # 3. Completed past appointment with Dr. Emily
+            # 3. Completed past appointment with Dr. Fathima Rahiman
             {
                 'patient': patients[0],
                 'doctor': doctors[2],
                 'dept': doctors[2].department,
-                'date': today - timedelta(days=5),
+                'date': today - timedelta(days=6),
                 'time': time(11, 0),
-                'reason': 'Recurring tension-type headaches and sleep disturbance.',
+                'reason': 'Recurring tension headaches exacerbated by coastal humidity and screen work.',
                 'status': 'completed',
-                'notes': 'Prescribed preventive medication and ergonomic posture guidance.',
+                'notes': 'Diagnosed tension cephalalgia, advised lifestyle modifications and stress management.',
                 'create_record': True,
-                'symptoms': 'Throbbing temporal headache, sensitivity to bright screen light, difficulty concentrating.',
-                'diagnosis': 'Tension-Type Headache with Stress-Induced Insomnia',
-                'rx': '1. Tab. Naproxen 250mg - 1 tablet as needed with food\n2. Tab. Magnesium Glycinate 400mg - 1 tablet at bedtime\n3. Melatonin 3mg - 1 tablet 30 min before sleep',
-                'treatment_notes': 'Perform daily neck stretch exercises and reduce screen exposure 1 hour prior to sleep.',
-                'follow_up': today + timedelta(days=25),
+                'symptoms': 'Throbbing frontal headache, neck stiffness, disturbed sleep.',
+                'diagnosis': 'Tension Cephalalgia with Mild Cervical Spasm',
+                'rx': '1. Tab. Naproxen 250mg - 1 tablet SOS after food\n2. Tab. Magnesium Glycinate 400mg - 1 tablet at night (30 days)\n3. Kerala Ayurvedic Ksheerabala 101 Tailam - 2 drops Nasya morning',
+                'treatment_notes': 'Perform gentle cervical stretches daily. Ensure 3 liters of tender coconut water or boiled cumin water daily.',
+                'follow_up': today + timedelta(days=24),
                 'paid': True,
             },
-            # 4. Completed past appointment with Dr. Smith
+            # 4. Completed past appointment with Dr. Padmanabhan Vaidyan (Ayurveda)
             {
                 'patient': patients[1],
-                'doctor': doctors[0],
-                'dept': doctors[0].department,
+                'doctor': doctors[4],
+                'dept': doctors[4].department,
                 'date': today - timedelta(days=12),
-                'time': time(9, 15),
-                'reason': 'Palpitations and shortness of breath while climbing stairs.',
+                'time': time(9, 30),
+                'reason': 'Traditional Kerala Ayurvedic consultation for joint stiffness and Rasayana wellness.',
                 'status': 'completed',
-                'notes': 'Normal sinus rhythm, advised lifestyle modifications.',
+                'notes': 'Vata imbalance diagnosed, prescribed traditional Kashayam and Abhyangam.',
                 'create_record': True,
-                'symptoms': 'Occasional rapid heartbeat episodes, dizziness after heavy exertion.',
-                'diagnosis': 'Mild Benign Sinus Tachycardia',
-                'rx': '1. Tab. Metoprolol Tartrate 25mg - 1 tablet daily morning after breakfast (30 days)\n2. Maintain daily hydration (>2.5 liters/day)',
-                'treatment_notes': 'Limit excessive caffeine and energy drinks. Walk 30 minutes at a moderate pace daily.',
-                'follow_up': today + timedelta(days=18),
+                'symptoms': 'Morning stiffness in knee joints, fatigue, digestive sluggishness.',
+                'diagnosis': 'Vata-Kapha Sandhigata Vata (Early Knee Osteoarthritis)',
+                'rx': '1. Sahacharadi Kashayam - 15ml with 45ml lukewarm water twice daily before meals\n2. Yogaraja Guggulu - 1 tablet twice daily after meals\n3. Mahanarayana Thailam - Warm application over knees followed by hot fomentation',
+                'treatment_notes': 'Recommended 7-day Abhyanga & Njavara Kizhi session at Arogya Keralam Ayur Center.',
+                'follow_up': today + timedelta(days=20),
                 'paid': True,
             },
-            # 5. Upcoming appointment next week with Dr. Marcus
+            # 5. Upcoming Orthopedic visit with Dr. Mathew Varghese
             {
                 'patient': patients[2],
                 'doctor': doctors[3],
                 'dept': doctors[3].department,
-                'date': today + timedelta(days=4),
+                'date': today + timedelta(days=3),
                 'time': time(15, 30),
-                'reason': 'Right knee pain when descending stairs.',
+                'reason': 'Follow-up assessment after sports knee recovery.',
                 'status': 'pending',
                 'notes': '',
                 'create_record': False,
                 'paid': False,
             },
-            # 6. Cancelled appointment
+            # 6. Cancelled visit
             {
                 'patient': patients[2],
-                'doctor': doctors[1],
-                'dept': doctors[1].department,
-                'date': today - timedelta(days=2),
+                'doctor': doctors[0],
+                'dept': doctors[0].department,
+                'date': today - timedelta(days=3),
                 'time': time(16, 0),
-                'reason': 'General wellness consultation.',
+                'reason': 'Executive health check-up consultation.',
                 'status': 'cancelled',
-                'notes': 'Patient requested rescheduling due to travel.',
+                'notes': 'Rescheduled due to travel to Kozhikode.',
                 'create_record': False,
                 'paid': False,
             }
@@ -337,16 +367,17 @@ class Command(BaseCommand):
                 doctor_notes=apt_data['notes'],
             )
 
-            # Create Invoice
+            # Create INR Invoice
             fee = apt_data['doctor'].consultation_fee
-            inv = BillingInvoice.objects.create(
+            med_charges = Decimal('350.00') if apt_data['create_record'] else Decimal('0.00')
+            BillingInvoice.objects.create(
                 appointment=apt,
                 patient=apt_data['patient'],
                 consultation_fee=fee,
-                medicine_charges=Decimal('25.00') if apt_data['create_record'] else Decimal('0.00'),
-                total_amount=fee + (Decimal('25.00') if apt_data['create_record'] else Decimal('0.00')),
+                medicine_charges=med_charges,
+                total_amount=fee + med_charges,
                 payment_status='paid' if apt_data['paid'] else 'unpaid',
-                payment_method='card' if apt_data['paid'] else 'cash',
+                payment_method='upi' if apt_data['paid'] else 'cash',
                 paid_at=timezone.now() if apt_data['paid'] else None,
             )
 
@@ -363,5 +394,5 @@ class Command(BaseCommand):
                     follow_up_date=apt_data['follow_up'],
                 )
 
-        self.stdout.write(self.style.SUCCESS(f"Seeded {len(sample_appointments)} appointments with records and invoices!"))
-        self.stdout.write(self.style.SUCCESS("All seed data successfully generated!"))
+        self.stdout.write(self.style.SUCCESS(f"Seeded {len(sample_appointments)} Kerala appointments with INR (₹) invoices!"))
+        self.stdout.write(self.style.SUCCESS("Arogya Keralam Kerala database successfully initialized!"))

@@ -1,71 +1,107 @@
 {% extends 'base.html' %}
-
-{% block title %}Book an Appointment - MediCare Hub{% endblock %}
+{% block title %}Book Appointment – MediCare Hub{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-7">
-            <div class="card form-card p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="fw-bold mb-0"><i class="bi bi-calendar2-plus-fill text-teal me-2"></i> Book Medical Appointment</h4>
-                    <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-arrow-left"></i> Back
-                    </a>
-                </div>
-                <p class="text-muted small">Select your preferred medical department, doctor, and consultation slot.</p>
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
 
-                <form method="POST">
-                    {% csrf_token %}
+      <!-- Back + Breadcrumb -->
+      <div class="d-flex align-items-center gap-2 mb-4 small text-muted">
+        <a href="{% url 'appointment_list' %}" class="text-decoration-none text-muted fw-500">
+          <i class="bi bi-arrow-left me-1"></i> Appointments
+        </a>
+        <i class="bi bi-chevron-right" style="font-size:.7rem;"></i>
+        <span class="text-dark fw-600">Book New</span>
+      </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Medical Department *</label>
-                        {{ form.department }}
-                        {% if form.department.errors %}
-                            <div class="text-danger small mt-1">{{ form.department.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Attending Doctor *</label>
-                        {{ form.doctor }}
-                        {% if form.doctor.errors %}
-                            <div class="text-danger small mt-1">{{ form.doctor.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Appointment Date *</label>
-                            {{ form.appointment_date }}
-                            {% if form.appointment_date.errors %}
-                                <div class="text-danger small mt-1">{{ form.appointment_date.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Preferred Time *</label>
-                            {{ form.appointment_time }}
-                            {% if form.appointment_time.errors %}
-                                <div class="text-danger small mt-1">{{ form.appointment_time.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Reason for Visit / Symptoms *</label>
-                        {{ form.reason_for_visit }}
-                        {% if form.reason_for_visit.errors %}
-                            <div class="text-danger small mt-1">{{ form.reason_for_visit.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-
-                    <button type="submit" class="btn btn-primary-custom w-100 py-2">
-                        <i class="bi bi-check-circle me-1"></i> Confirm Appointment Booking
-                    </button>
-                </form>
-            </div>
+      <!-- Form Card -->
+      <div class="form-card p-5">
+        <!-- Header -->
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="d-flex align-items-center justify-content-center rounded-3"
+               style="width:52px;height:52px;background:linear-gradient(135deg,var(--primary-light),#bae6fd);">
+            <i class="bi bi-calendar2-plus-fill text-teal" style="font-size:1.4rem;"></i>
+          </div>
+          <div>
+            <h4 class="fw-800 mb-0">Book a Consultation</h4>
+            <p class="text-muted small mb-0">Choose your doctor and preferred time slot</p>
+          </div>
         </div>
+
+        <form method="POST" novalidate>
+          {% csrf_token %}
+
+          <!-- Department -->
+          <div class="mb-4">
+            <label class="form-label d-flex align-items-center gap-1">
+              <i class="bi bi-hospital text-teal small"></i> Medical Department
+            </label>
+            {{ form.department }}
+            {% if form.department.errors %}
+              <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form.department.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Doctor -->
+          <div class="mb-4">
+            <label class="form-label d-flex align-items-center gap-1">
+              <i class="bi bi-person-badge text-teal small"></i> Attending Doctor
+            </label>
+            {{ form.doctor }}
+            {% if form.doctor.errors %}
+              <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ form.doctor.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Date & Time -->
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6">
+              <label class="form-label d-flex align-items-center gap-1">
+                <i class="bi bi-calendar3 text-teal small"></i> Date
+              </label>
+              {{ form.appointment_date }}
+              {% if form.appointment_date.errors %}
+                <div class="text-danger small mt-1">{{ form.appointment_date.errors.0 }}</div>
+              {% endif %}
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label d-flex align-items-center gap-1">
+                <i class="bi bi-clock text-teal small"></i> Preferred Time
+              </label>
+              {{ form.appointment_time }}
+              {% if form.appointment_time.errors %}
+                <div class="text-danger small mt-1">{{ form.appointment_time.errors.0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Reason -->
+          <div class="mb-5">
+            <label class="form-label d-flex align-items-center gap-1">
+              <i class="bi bi-chat-left-text text-teal small"></i> Reason for Visit / Symptoms
+            </label>
+            {{ form.reason_for_visit }}
+            {% if form.reason_for_visit.errors %}
+              <div class="text-danger small mt-1">{{ form.reason_for_visit.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary-custom w-100 py-3 rounded-3" style="font-size:.95rem;">
+            <i class="bi bi-check-circle me-2"></i> Confirm Appointment Booking
+          </button>
+        </form>
+
+        <!-- Info hint -->
+        <div class="mt-4 p-3 rounded-3 d-flex align-items-start gap-2 small"
+             style="background:var(--bg-main);border:1px solid var(--border);">
+          <i class="bi bi-info-circle-fill text-teal mt-1 flex-shrink-0"></i>
+          <span class="text-muted">An invoice will be automatically generated upon booking. Payment can be made online or at the hospital counter.</span>
+        </div>
+      </div>
+
     </div>
+  </div>
 </div>
 {% endblock %}

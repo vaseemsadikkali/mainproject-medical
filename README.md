@@ -1,6 +1,6 @@
-# MediCare Hub – Hospital Management System with Role-Based Access Control
+# Arogya Keralam (ആരോഗ്യകേരളം) – Kerala Healthcare Management System with Role-Based Access Control
 
-A comprehensive, production-ready Django web application developed according to the **Entri Final Project Guidelines**. The system implements strict **Role-Based Access Control (RBAC)** across three distinct user roles, full CRUD workflows, interactive dashboards with Chart.js analytics, database relationships, and responsive Bootstrap 5 UI.
+A comprehensive, production-ready Django web application developed according to the **Entri Final Project Guidelines**. Built with an authentic **Kerala theme** ("God's Own Healthcare"), standard **Indian Rupee (INR - ₹)** currency integration, strict **Role-Based Access Control (RBAC)** across three distinct user roles, full CRUD workflows, interactive dashboards with Chart.js analytics, database relationships, and a responsive Bootstrap 5 UI.
 
 ---
 

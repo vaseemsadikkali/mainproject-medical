@@ -69,8 +69,8 @@
         </div>
         <div class="col-md-3 col-6">
             <div class="card stat-card p-3 text-center">
-                <span class="text-muted small fw-semibold text-uppercase">Revenue Realized</span>
-                <h3 class="fw-bold text-teal mb-0">${{ revenue }}</h3>
+                <span class="text-muted small fw-semibold text-uppercase">Revenue Realized (INR)</span>
+                <h3 class="fw-bold text-teal mb-0">₹{{ revenue }}</h3>
             </div>
         </div>
     </div>
@@ -102,7 +102,7 @@
                             <td>{{ apt.doctor }}</td>
                             <td>{{ apt.department.name }}</td>
                             <td><span class="badge {{ apt.get_status_badge }}">{{ apt.get_status_display }}</span></td>
-                            <td class="fw-semibold">${{ apt.doctor.consultation_fee }}</td>
+                            <td class="fw-semibold">₹{{ apt.doctor.consultation_fee }}</td>
                         </tr>
                     {% empty %}
                         <tr>
