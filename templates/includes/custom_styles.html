@@ -1,0 +1,699 @@
+/* ==========================================================================
+   Arogya Kerala MediCare - Professional Healthcare Design System
+   Modern Enterprise Healthcare Portal (Clean, Minimal, Trustworthy)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Brand Primary - Professional Emerald & Deep Slate */
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-light: #ecfdf5;
+  --primary-subtle: #d1fae5;
+  --primary-border: #a7f3d0;
+
+  /* Accent Blues */
+  --accent-blue: #0284c7;
+  --accent-blue-light: #f0f9ff;
+
+  /* Neutral Dark Tones */
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+
+  /* Functional Status */
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --success-border: #bbf7d0;
+
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+
+  --info: #0284c7;
+  --info-bg: #f0f9ff;
+  --info-border: #bae6fd;
+
+  /* Design Tokens */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.08);
+  --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.07);
+  --shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Base & Typography
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--slate-50);
+  color: var(--slate-800);
+  line-height: 1.6;
+  font-size: 14.5px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--slate-900);
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+/* ==========================================================================
+   Navigation Bar (Clean Enterprise Style)
+   ========================================================================== */
+.navbar-custom {
+  background: #ffffff;
+  border-bottom: 1px solid var(--slate-200);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.brand-symbol {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+  flex-shrink: 0;
+}
+
+.brand-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--slate-900);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.brand-text span {
+  color: var(--primary);
+}
+
+.brand-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--slate-500);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.nav-link {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--slate-600) !important;
+  padding: 8px 14px !important;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.nav-link:hover, .nav-link:focus {
+  color: var(--slate-900) !important;
+  background: var(--slate-100);
+}
+
+.nav-link.active-link {
+  color: var(--primary) !important;
+  background: var(--primary-light);
+}
+
+/* ==========================================================================
+   Hero Section (Professional Medical Gradient Mesh)
+   ========================================================================== */
+.hero-section {
+  background: linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 64px 0 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(2, 132, 199, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-xs);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--slate-700);
+  margin-bottom: 20px;
+}
+
+.hero-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.18;
+  margin-bottom: 18px;
+}
+
+.hero-title span.highlight {
+  background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  color: var(--slate-600);
+  max-width: 650px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   Stat Cards & Metrics
+   ========================================================================== */
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
+  height: 100%;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--slate-300);
+}
+
+.stat-val {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.stat-lbl {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--slate-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.stat-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Role Overview Cards
+   ========================================================================== */
+.role-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.role-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: var(--slate-300);
+}
+
+.role-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.role-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--slate-600);
+  margin-bottom: 12px;
+}
+
+.role-feature-item i {
+  color: var(--primary);
+  font-size: 0.95rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Doctor Cards
+   ========================================================================== */
+.doctor-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.doctor-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: var(--primary-border);
+}
+
+.doc-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+  border: 2px solid var(--slate-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.1);
+}
+
+.doc-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--slate-900);
+  margin-bottom: 4px;
+}
+
+.doc-dept {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.doc-detail-box {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.doc-detail-box .item-val {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--slate-900);
+}
+
+.doc-detail-box .item-lbl {
+  font-size: 0.72rem;
+  color: var(--slate-500);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Department Cards
+   ========================================================================== */
+.dept-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dept-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: var(--primary-border);
+}
+
+.dept-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+/* ==========================================================================
+   Buttons & Action Controls
+   ========================================================================== */
+.btn-primary-custom {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  padding: 9px 18px;
+  box-shadow: 0 1px 2px rgba(5, 150, 105, 0.15);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-primary-custom:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-secondary-custom {
+  background: #ffffff;
+  border: 1px solid var(--slate-300);
+  color: var(--slate-700) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  padding: 9px 18px;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-secondary-custom:hover {
+  background: var(--slate-100);
+  border-color: var(--slate-400);
+  color: var(--slate-900) !important;
+}
+
+/* ==========================================================================
+   Tables & Data Displays
+   ========================================================================== */
+.table-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+.table-card .card-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--slate-200);
+  padding: 18px 24px;
+}
+
+.custom-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.custom-table thead th {
+  background: var(--slate-50);
+  color: var(--slate-600);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--slate-200);
+  white-space: nowrap;
+}
+
+.custom-table tbody td {
+  padding: 14px 20px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--slate-100);
+  font-size: 0.88rem;
+  color: var(--slate-700);
+}
+
+.custom-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   Status & Role Pills
+   ========================================================================== */
+.badge-status {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-pending {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+
+.status-confirmed {
+  background: var(--info-bg);
+  color: var(--info);
+  border: 1px solid var(--info-border);
+}
+
+.status-completed {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+}
+
+.status-cancelled {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger-border);
+}
+
+.badge-role-admin {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #fbcfe8;
+}
+
+.badge-role-staff {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.badge-role-patient {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+/* ==========================================================================
+   Forms & Inputs
+   ========================================================================== */
+.form-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  padding: 36px;
+}
+
+.form-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--slate-700);
+  margin-bottom: 6px;
+}
+
+.form-control, .form-select {
+  border: 1.5px solid var(--slate-300);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  color: var(--slate-800);
+  background-color: #ffffff;
+  transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+  outline: none;
+}
+
+/* ==========================================================================
+   Prescriptions & Clinical Documents
+   ========================================================================== */
+.prescription-sheet {
+  background: #ffffff;
+  border: 1px solid var(--slate-300);
+  border-radius: var(--radius-lg);
+  padding: 44px;
+  box-shadow: var(--shadow);
+}
+
+.rx-mark {
+  font-family: 'Times New Roman', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+footer {
+  background: var(--slate-900);
+  color: var(--slate-400);
+  padding: 50px 0 24px;
+  margin-top: auto;
+  border-top: 1px solid var(--slate-800);
+}
+
+footer a {
+  color: var(--slate-400);
+}
+
+footer a:hover {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Print Optimization
+   ========================================================================== */
+@media print {
+  .navbar-custom, footer, .btn, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+  }
+  .prescription-sheet, .table-card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+}

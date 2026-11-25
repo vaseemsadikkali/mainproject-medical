@@ -13,6 +13,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
     'https://*.pinggy.link',
     'https://*.localhost.run',
     'https://*.lhr.life',
