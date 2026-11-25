@@ -667,19 +667,38 @@ a:hover {
    Footer
    ========================================================================== */
 footer {
-  background: var(--slate-900);
-  color: var(--slate-400);
-  padding: 50px 0 24px;
+  background: #0b1324 !important;
+  color: #cbd5e1 !important;
+  padding: 56px 0 28px;
   margin-top: auto;
-  border-top: 1px solid var(--slate-800);
+  border-top: 1px solid #1e293b;
+}
+
+footer p,
+footer span,
+footer li,
+footer div {
+  color: #cbd5e1 !important;
+}
+
+footer .text-muted {
+  color: #94a3b8 !important;
+}
+
+footer h6 {
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 footer a {
-  color: var(--slate-400);
+  color: #94a3b8 !important;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 footer a:hover {
-  color: #ffffff;
+  color: #38bdf8 !important;
 }
 
 /* ==========================================================================
