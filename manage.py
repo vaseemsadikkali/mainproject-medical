@@ -7,7 +7,7 @@ import sys
 def main():
     """Run administrative tasks."""
     # Force-overwrites any existing DJANGO_SETTINGS_MODULE environment variable
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'your_new_project.settings'
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'medicare_project.settings'
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
